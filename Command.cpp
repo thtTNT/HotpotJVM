@@ -10,12 +10,12 @@ CommandInfo parseCommand(int argc, char *argv[]) {
         info.versionFlag = false;
         return info;
     }
-    if (strcmp(argv[1], "help") == 0) {
+    if (strcmp(argv[1], "-help") == 0) {
         info.helpFlag = true;
         info.versionFlag = false;
         return info;
     }
-    if (strcmp(argv[1], "version") == 0) {
+    if (strcmp(argv[1], "-version") == 0) {
         info.helpFlag = false;
         info.versionFlag = true;
         return info;
@@ -57,3 +57,18 @@ void printCommand(const CommandInfo &info) {
     }
     std::cout << std::endl;
 }
+
+void executeCommand(const CommandInfo &info) {
+    if (info.helpFlag) {
+        std::cout << "Usage: HotpotJVM [-options] class [args...]\n"
+                     "      -help list all command of Hotpot JVM\n"
+                     "      -version show the version of Hotpot JVM\n"
+                     "      -classpath[cp] set the classpath";
+        return;
+    }
+    if (info.versionFlag) {
+        std::cout << "HotpotJVM version 0.0.1";
+        return;
+    }
+}
+

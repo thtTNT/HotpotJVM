@@ -23,3 +23,5 @@ struct CommandInfo {
 CommandInfo parseCommand(int argc, char *argv[]);
 
 void printCommand(const CommandInfo& info);
+
+void executeCommand(const CommandInfo& info);
