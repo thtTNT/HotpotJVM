@@ -2,6 +2,10 @@
 // Created by 屠昊天 on 2022/3/8.
 //
 #include "Command.h"
+#include "utils/Utils.h"
+#include "boost/filesystem/path.hpp"
+#include "boost/filesystem/operations.hpp"
+#include "./classpath/Classpath.h"
 
 CommandInfo parseCommand(int argc, char *argv[]) {
     CommandInfo info;
@@ -25,9 +29,25 @@ CommandInfo parseCommand(int argc, char *argv[]) {
         // Parse classpath
         if (strcmp(argv[index], "-cp") == 0 || strcmp(argv[index], "-classpath") == 0) {
             if (argc == index + 1) {
-                throw CommandParseError{};
+                throw CommandParseError("-classpath must follow a string");
             }
             info.classpath = argv[++index];
+            if (!tools::string::endWith(info.className, "/")) {
+                info.classpath = info.classpath + "/";
+            }
+            index++;
+            continue;
+        }
+
+        // Parse Xjre
+        if (strcmp(argv[index], "-Xjre") == 0) {
+            if (argc == index + 1) {
+                throw CommandParseError("-Xjre must follow a string");
+            }
+            info.Xjre = argv[++index];
+            if (!tools::string::endWith(info.Xjre, "/")) {
+                info.Xjre += "/";
+            }
             index++;
             continue;
         }
@@ -42,6 +62,15 @@ CommandInfo parseCommand(int argc, char *argv[]) {
             index++;
         }
     }
+
+    // Fill default classpath
+    if (info.classpath.empty()) {
+        info.classpath = boost::filesystem::initial_path<boost::filesystem::path>().string() + "/";
+    }
+    // Check Xjre
+    if (info.Xjre.empty()) {
+        throw CommandParseError("-Xjre is required");
+    }
     return info;
 }
 
@@ -49,6 +78,7 @@ void printCommand(const CommandInfo &info) {
     std::cout << "helpFlag: " << info.helpFlag << std::endl;
     std::cout << "versionFlag: " << info.versionFlag << std::endl;
     std::cout << "classpath: " << info.classpath << std::endl;
+    std::cout << "Xjre: " << info.Xjre << std::endl;
     std::cout << "className: " << info.className << std::endl;
     // Print args
     std::cout << "args: ";
@@ -70,5 +100,8 @@ void executeCommand(const CommandInfo &info) {
         std::cout << "HotpotJVM version 0.0.1";
         return;
     }
+
+    auto classpath = Classpath::parse(info.Xjre, info.classpath);
+    std::cout << classpath.readClass("java/lang/Object.class");
 }
 

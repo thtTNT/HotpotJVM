@@ -1,0 +1,6 @@
+[requires]
+libzip/1.8.0
+boost/1.78.0
+
+[generators]
+cmake
