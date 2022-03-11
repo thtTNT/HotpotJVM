@@ -8,24 +8,28 @@
 #include <utility>
 #include <fstream>
 #include <iostream>
+#include <vector>
 
 
 DirEntry::DirEntry(std::string absDir) {
     this->absDir = std::move(absDir);
 }
 
-char *DirEntry::readClass(const std::string &className) {
-    std::ifstream fin(this->absDir + className);
+std::string *DirEntry::readClass(const std::string &className) {
+    auto bs = new std::vector<char>();
+    std::ifstream fin(this->absDir + className, std::ios::binary);
     if (fin.is_open()) {
-        char *bs = nullptr;
-        fin >> bs;
+        char chr;
+        while (fin.get(chr)) {
+            bs->push_back(chr);
+        }
         fin.close();
-        return bs;
+        return new std::string(bs->data(), bs->size());
     } else {
         throw FileNotFoundException{};
     }
 }
 
-std::string DirEntry::string() {
+void DirEntry::string() {
     std::cout << this->absDir << std::endl;
 }

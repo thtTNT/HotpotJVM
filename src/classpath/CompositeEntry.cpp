@@ -14,7 +14,7 @@ CompositeEntry::CompositeEntry(const std::string &pathListString) {
 }
 
 
-char *CompositeEntry::readClass(const std::string &className) {
+std::string *CompositeEntry::readClass(const std::string &className) {
     for (auto entry : this->entries) {
         auto bs = entry->readClass(className);
         if (bs != nullptr) {
@@ -24,8 +24,8 @@ char *CompositeEntry::readClass(const std::string &className) {
     return nullptr;
 }
 
-std::string CompositeEntry::string() {
+void CompositeEntry::string() {
     for (auto entry : this->entries) {
-        std::cout << entry->string() << std::endl;
+        entry->string();
     }
 }

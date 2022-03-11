@@ -2,10 +2,11 @@
 // Created by 屠昊天 on 2022/3/8.
 //
 #include "Command.h"
-#include "utils/Utils.h"
+#include "../utils/Utils.h"
 #include "boost/filesystem/path.hpp"
 #include "boost/filesystem/operations.hpp"
-#include "./classpath/Classpath.h"
+#include "../classpath/Classpath.h"
+#include "../classfile/ClassFile.h"
 
 CommandInfo parseCommand(int argc, char *argv[]) {
     CommandInfo info;
@@ -102,6 +103,8 @@ void executeCommand(const CommandInfo &info) {
     }
 
     auto classpath = Classpath::parse(info.Xjre, info.classpath);
-    std::cout << classpath.readClass("java/lang/Object.class");
+    auto bs = classpath.readClass("HelloWorld.class");
+    ClassFile::parse(bs);
+
 }
 

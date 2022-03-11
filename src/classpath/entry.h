@@ -10,10 +10,11 @@
 
 class Entry {
 public:
-    virtual char *readClass(const std::string &className) = 0;
-    virtual std::string string() = 0;
+    virtual std::string *readClass(const std::string &className) = 0;
+
+    virtual void string() = 0;
 };
 
-Entry *createEntry(const std::string& path);
+Entry *createEntry(const std::string &path);
 
 #endif //HOTPOTJVM_ENTRY_H

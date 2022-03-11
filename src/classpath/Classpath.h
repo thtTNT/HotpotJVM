@@ -15,8 +15,10 @@ private:
     Entry *userClasspath;
 public:
     static Classpath parse(const std::string &jrePath, const std::string &userClasspath);
-    std::string string();
-    char* readClass(const std::string& className);
+
+    void string();
+
+    std::string *readClass(const std::string &className);
 };
 
 

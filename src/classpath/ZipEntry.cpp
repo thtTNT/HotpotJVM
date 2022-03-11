@@ -13,7 +13,7 @@ ZipEntry::ZipEntry(std::string absPath) {
     this->absPath = std::move(absPath);
 }
 
-char *ZipEntry::readClass(const std::string &className) {
+std::string *ZipEntry::readClass(const std::string &className) {
     // Unzip the file
     int error = 0;
     zip *z = zip_open(this->absPath.c_str(), ZIP_RDONLY, &error);
@@ -25,7 +25,7 @@ char *ZipEntry::readClass(const std::string &className) {
     struct zip_stat st{};
     zip_stat_init(&st);
     error = zip_stat(z, className.c_str(), ZIP_FL_ENC_GUESS, &st);
-    if (st.valid == 0){
+    if (st.valid == 0) {
         return nullptr;
     }
 
@@ -35,9 +35,9 @@ char *ZipEntry::readClass(const std::string &className) {
     zip_fclose(file);
 
     zip_close(z);
-    return content;
+    return new std::string(content);
 }
 
-std::string ZipEntry::string() {
-    return this->absPath;
+void ZipEntry::string() {
+    std::cout << this->absPath << std::endl;
 }

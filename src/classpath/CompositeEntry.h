@@ -10,13 +10,16 @@
 
 #include "entry.h"
 
-class CompositeEntry : public Entry{
+class CompositeEntry : public Entry {
 public:
-    explicit CompositeEntry(const std::string& pathList);
-    char * readClass(const std::string &className) override;
-    std::string string() override;
+    explicit CompositeEntry(const std::string &pathList);
+
+    std::string *readClass(const std::string &className) override;
+
+    void string() override;
+
 private:
-    std::vector<Entry*> entries;
+    std::vector<Entry *> entries;
 };
 
 

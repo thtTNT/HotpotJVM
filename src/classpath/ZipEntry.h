@@ -15,9 +15,9 @@ public:
 
     explicit ZipEntry(std::string absPath);
 
-    char *readClass(const std::string &className) override;
+    std::string *readClass(const std::string &className) override;
 
-    std::string string() override;
+    void string() override;
 };
 
 

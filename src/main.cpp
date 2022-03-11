@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Command.h"
+#include "command/Command.h"
 
 int main(int argc, char *argv[]) {
     try {

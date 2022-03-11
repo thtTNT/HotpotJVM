@@ -23,7 +23,7 @@ Entry *createEntry(const std::string &path) {
         directory_iterator it(baseDir);
         directory_iterator directory_end;
         for (; it != directory_end; it++) {
-            if (is_directory(*it)){
+            if (is_directory(*it)) {
                 continue;
             }
             auto filename = it->path().filename().string();
@@ -43,7 +43,7 @@ Entry *createEntry(const std::string &path) {
     return new DirEntry(path);
 }
 
-char *Entry::readClass(const std::string &className) {
+std::string *Entry::readClass(const std::string &className) {
     return nullptr;
 }
 

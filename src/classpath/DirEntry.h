@@ -8,12 +8,15 @@
 #include <string>
 #include "entry.h"
 
-class DirEntry : public Entry{
+class DirEntry : public Entry {
 public:
     std::string absDir;
+
     explicit DirEntry(std::string absDir);
-    char * readClass(const std::string &className) override;
-    std::string string() override;
+
+    std::string *readClass(const std::string &className) override;
+
+    void string() override;
 };
 
 
