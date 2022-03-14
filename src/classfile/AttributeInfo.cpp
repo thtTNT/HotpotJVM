@@ -50,3 +50,6 @@ AttributeInfo *newAttributeInfo(std::string name, unsigned int length, ConstantP
     }
 }
 
+AttributeInfo::AttributeInfo(AttributeType type) {
+    this->type = type;
+}

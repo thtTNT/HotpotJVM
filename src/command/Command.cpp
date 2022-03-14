@@ -7,6 +7,7 @@
 #include "boost/filesystem/operations.hpp"
 #include "../classpath/Classpath.h"
 #include "../classfile/ClassFile.h"
+#include "../Interpreter.h"
 
 CommandInfo parseCommand(int argc, char *argv[]) {
     CommandInfo info;
@@ -83,10 +84,28 @@ void printCommand(const CommandInfo &info) {
     std::cout << "className: " << info.className << std::endl;
     // Print args
     std::cout << "args: ";
-    for (const auto &arg : info.args) {
+    for (const auto &arg: info.args) {
         std::cout << arg << " ";
     }
     std::cout << std::endl;
+}
+
+MemberInfo *getMainMethod(ClassFile *cf) {
+    for (auto method: cf->Methods()) {
+        if (method->getName() == "main" && method->getDescriptor() == "([Ljava/lang/String;)V") {
+            return method;
+        }
+    }
+    return nullptr;
+}
+
+
+void startJVM(const CommandInfo &info) {
+    auto classpath = Classpath::parse(info.Xjre, info.classpath);
+    auto bs = classpath.readClass("GaussTest.class");
+    auto classFile = ClassFile::parse(bs);
+    auto mainMethod = getMainMethod(classFile);
+    interpret(mainMethod);
 }
 
 void executeCommand(const CommandInfo &info) {
@@ -102,9 +121,8 @@ void executeCommand(const CommandInfo &info) {
         return;
     }
 
-    auto classpath = Classpath::parse(info.Xjre, info.classpath);
-    auto bs = classpath.readClass("HelloWorld.class");
-    ClassFile::parse(bs);
-
+    startJVM(info);
 }
+
+
 

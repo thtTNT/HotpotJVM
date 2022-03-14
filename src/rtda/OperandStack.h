@@ -33,6 +33,10 @@ public:
     void pushRef(Object *ref);
 
     Object *popRef();
+
+    void pushSlot(Slot slot);
+
+    Slot popSlot();
 };
 
 OperandStack *newOperandStack(unsigned int maxStack);

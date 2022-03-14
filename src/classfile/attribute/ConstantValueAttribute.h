@@ -12,6 +12,8 @@ class ConstantValueAttribute : public AttributeInfo {
 public:
     unsigned short constantValueIndex = 0;
 
+    ConstantValueAttribute();
+
     void readInfo(ClassReader *reader) override;
 };
 

@@ -9,16 +9,20 @@
 #include "LocalVars.h"
 #include "OperandStack.h"
 
+class Thread;
+
 class Frame {
 public:
     Frame *last = nullptr;
     LocalVars *localVars = nullptr;
     OperandStack *operandStack = nullptr;
+    Thread *thread;
+    int nextPC = 0;
 
-    Frame(unsigned maxLocals,unsigned maxStack);
+    Frame(Thread *thread, unsigned maxLocals, unsigned maxStack);
 };
 
-Frame *newFrame(unsigned int maxLocals, unsigned int maxStack);
+Frame *newFrame(Thread *thread, unsigned int maxLocals, unsigned int maxStack);
 
 
 #endif //HOTPOTJVM_FRAME_H

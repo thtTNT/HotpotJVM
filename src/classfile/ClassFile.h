@@ -42,7 +42,7 @@ public:
 
     std::vector<MemberInfo> Fields();
 
-    std::vector<MemberInfo> Methods();
+    std::vector<MemberInfo*> Methods();
 
     std::string ClassName();
 

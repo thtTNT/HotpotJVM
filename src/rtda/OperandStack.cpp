@@ -65,6 +65,17 @@ Object *OperandStack::popRef() {
     return this->slots[this->size].ref;
 }
 
+void OperandStack::pushSlot(Slot slot) {
+    this->slots[this->size] = slot;
+    this->size++;
+}
+
+Slot OperandStack::popSlot() {
+    this->size--;
+    return this->slots[this->size];
+}
+
+
 
 
 

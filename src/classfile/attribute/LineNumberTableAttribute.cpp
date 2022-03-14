@@ -14,3 +14,7 @@ void LineNumberTableAttribute::readInfo(ClassReader *reader) {
         this->lineNumberTable[i] = entry;
     }
 }
+
+LineNumberTableAttribute::LineNumberTableAttribute() : AttributeInfo(LINE_NUMBER_TABLE) {
+
+}

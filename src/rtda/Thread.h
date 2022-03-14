@@ -7,12 +7,12 @@
 
 
 #include "Stack.h"
-#include "Frame.h"
+#include <string>
 
 class Thread {
 private:
     unsigned int pc;
-    Stack *stack;
+    Stack *stack = newStack(1024);
 public:
 
     unsigned int getPC();
@@ -24,7 +24,12 @@ public:
     Frame *popFrame();
 
     Frame *currentFrame();
+
+    Frame *initFrame(unsigned maxLocals, unsigned maxStack);
+
 };
+
+[[noreturn]] void loop(Thread *thread, std::string bytecode);
 
 Thread *newThread();
 

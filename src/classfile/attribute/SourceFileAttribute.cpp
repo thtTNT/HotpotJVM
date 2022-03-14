@@ -12,6 +12,7 @@ std::string SourceFileAttribute::filename() {
     return this->constantPool->getUTF8(this->sourceFileIndex);
 }
 
-SourceFileAttribute::SourceFileAttribute(ConstantPool *constantPool) {
+SourceFileAttribute::SourceFileAttribute(ConstantPool *constantPool) : AttributeInfo(SOURCE_FILE) {
     this->constantPool = constantPool;
 }
+

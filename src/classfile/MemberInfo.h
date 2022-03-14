@@ -8,6 +8,7 @@
 
 #include "ConstantPool.h"
 #include "AttributeInfo.h"
+#include "attribute/CodeAttribute.h"
 
 class MemberInfo {
 private:
@@ -27,6 +28,8 @@ public:
     std::string getName();
 
     std::string getDescriptor();
+
+    CodeAttribute *getCodeAttributes();
 };
 
 std::vector<MemberInfo *> readMembers(ClassReader *reader, ConstantPool *constantPool);

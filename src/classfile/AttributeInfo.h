@@ -11,8 +11,23 @@
 #include "ClassReader.h"
 #include "ConstantPool.h"
 
+enum AttributeType {
+    CODE,
+    CONSTANT_VALUE,
+    DEPRECATED,
+    EXCEPTIONS,
+    LINE_NUMBER_TABLE,
+    SOURCE_FILE,
+    SYNTHETIC,
+    UNPARSED
+};
+
 class AttributeInfo {
 public:
+    AttributeType type;
+
+    AttributeInfo(AttributeType type);
+
     virtual void readInfo(ClassReader *reader) = 0;
 };
 

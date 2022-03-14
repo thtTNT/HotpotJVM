@@ -6,3 +6,6 @@
 
 void DeprecatedAttribute::readInfo(ClassReader *reader) {
 }
+
+DeprecatedAttribute::DeprecatedAttribute() : AttributeInfo(DEPRECATED) {
+}

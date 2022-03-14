@@ -3,6 +3,7 @@
 //
 
 #include "MemberInfo.h"
+#include "attribute/CodeAttribute.h"
 
 #include <utility>
 
@@ -21,6 +22,14 @@ MemberInfo::MemberInfo(ConstantPool *constantPool, unsigned short accessFlags, u
 
 std::string MemberInfo::getDescriptor() {
     return this->constantPool->getUTF8(this->descriptorIndex);
+}
+
+CodeAttribute *MemberInfo::getCodeAttributes() {
+    for (auto attribute: this->attributes) {
+        if (attribute->type == CODE) {
+            return dynamic_cast<CodeAttribute *>(attribute);
+        }
+    }
 }
 
 

@@ -15,6 +15,8 @@ struct LineNumberTableEntry {
 
 class LineNumberTableAttribute : public AttributeInfo {
 public:
+    LineNumberTableAttribute();
+
     std::vector<LineNumberTableEntry> lineNumberTable;
     void readInfo(ClassReader *reader) override;
 };

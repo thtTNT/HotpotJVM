@@ -7,3 +7,7 @@
 void ConstantValueAttribute::readInfo(ClassReader *reader) {
     this->constantValueIndex = reader->readUint16();
 }
+
+ConstantValueAttribute::ConstantValueAttribute() : AttributeInfo(CONSTANT_VALUE) {
+
+}

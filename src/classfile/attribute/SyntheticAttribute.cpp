@@ -6,3 +6,7 @@
 
 void SyntheticAttribute::readInfo(ClassReader *reader) {
 }
+
+SyntheticAttribute::SyntheticAttribute() : AttributeInfo(SYNTHETIC) {
+
+}

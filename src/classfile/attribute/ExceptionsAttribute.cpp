@@ -11,3 +11,7 @@ void ExceptionsAttribute::readInfo(ClassReader *reader) {
 std::vector<unsigned short> ExceptionsAttribute::getIndexTable() {
     return this->indexTable;
 }
+
+ExceptionsAttribute::ExceptionsAttribute() : AttributeInfo(EXCEPTIONS) {
+
+}

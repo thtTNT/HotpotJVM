@@ -9,6 +9,9 @@
 #include "../AttributeInfo.h"
 
 class SyntheticAttribute : public AttributeInfo {
+public:
+    SyntheticAttribute();
+
     void readInfo(ClassReader *reader) override;
 };
 

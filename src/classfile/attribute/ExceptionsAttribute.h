@@ -12,6 +12,8 @@ class ExceptionsAttribute : public AttributeInfo {
 private:
     std::vector<unsigned short> indexTable;
 public:
+    ExceptionsAttribute();
+
     void readInfo(ClassReader *reader) override;
 
     std::vector<unsigned short> getIndexTable();

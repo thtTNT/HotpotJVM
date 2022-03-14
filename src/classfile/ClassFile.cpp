@@ -34,3 +34,7 @@ unsigned short ClassFile::MinorVersion() const {
 unsigned short ClassFile::MajorVersion() const {
     return this->majorVersion;
 }
+
+std::vector<MemberInfo *> ClassFile::Methods() {
+    return this->methods;
+}

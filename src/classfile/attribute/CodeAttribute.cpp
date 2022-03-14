@@ -27,7 +27,7 @@ std::vector<ExceptionTableEntry> CodeAttribute::readExceptionTable(ClassReader *
     return table;
 }
 
-CodeAttribute::CodeAttribute(ConstantPool *constantPool) {
+CodeAttribute::CodeAttribute(ConstantPool *constantPool) : AttributeInfo(CODE) {
     this->constantPool = constantPool;
 }
 

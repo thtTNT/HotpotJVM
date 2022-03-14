@@ -8,7 +8,10 @@
 
 #include "../AttributeInfo.h"
 
-class DeprecatedAttribute : public AttributeInfo{
+class DeprecatedAttribute : public AttributeInfo {
+public:
+    DeprecatedAttribute();
+
     void readInfo(ClassReader *reader) override;
 };
 
