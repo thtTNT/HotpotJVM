@@ -24,14 +24,19 @@
 #define CONSTANT_INVOKE_DYNAMIC 18
 
 
-class ConstantInfo {
-public:
-    unsigned char type;
-    explicit ConstantInfo(unsigned char type);
-    virtual void readInfo(ClassReader *reader) = 0;
-};
+namespace classFile {
 
-ConstantInfo *readConstantInfo(ClassReader *reader, ConstantPool *constantPool);
+    class ConstantInfo {
+    public:
+        unsigned char type;
 
+        explicit ConstantInfo(unsigned char type);
+
+        virtual void readInfo(ClassReader *reader) = 0;
+    };
+
+    ConstantInfo *readConstantInfo(ClassReader *reader, ConstantPool *constantPool);
+
+}
 
 #endif //HOTPOTJVM_CONSTANTINFO_H

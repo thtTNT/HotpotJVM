@@ -9,6 +9,8 @@
 #include "../classfile/ClassFile.h"
 #include "../Interpreter.h"
 
+using namespace classFile;
+
 CommandInfo parseCommand(int argc, char *argv[]) {
     CommandInfo info;
     if (argc == 1) {
@@ -102,9 +104,9 @@ MemberInfo *getMainMethod(ClassFile *cf) {
 
 void startJVM(const CommandInfo &info) {
     auto classpath = Classpath::parse(info.Xjre, info.classpath);
-    auto bs = classpath.readClass("GaussTest.class");
-    auto classFile = ClassFile::parse(bs);
-    auto mainMethod = getMainMethod(classFile);
+    auto classLoader = heap::newClassLoader(&classpath);
+    auto mainClass = classLoader->loadClass("MyObject.class");
+    auto mainMethod = mainClass->getMainMethod();
     interpret(mainMethod);
 }
 

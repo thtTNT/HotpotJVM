@@ -8,15 +8,17 @@
 #include <string>
 #include "../ConstantInfo.h"
 
+namespace classFile {
 
-class ConstantUTF8Info : public ConstantInfo {
-public:
-    std::string value;
+    class ConstantUTF8Info : public ConstantInfo {
+    public:
+        std::string value;
 
-    ConstantUTF8Info() : ConstantInfo(CONSTANT_UTF8) {};
+        ConstantUTF8Info() : ConstantInfo(CONSTANT_UTF8) {};
 
-    void readInfo(ClassReader *reader) override;
-};
+        void readInfo(ClassReader *reader) override;
+    };
 
+}
 
 #endif //HOTPOTJVM_CONSTANTUTF8INFO_H

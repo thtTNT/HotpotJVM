@@ -5,8 +5,8 @@
 #ifndef HOTPOTJVM_INTERPRETER_H
 #define HOTPOTJVM_INTERPRETER_H
 
-#include "./classfile/MemberInfo.h"
+#include "heap/Method.h"
 
-void interpret(MemberInfo *methodInfo);
+void interpret(heap::Method *method);
 
 #endif //HOTPOTJVM_INTERPRETER_H

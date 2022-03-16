@@ -4,8 +4,10 @@
 
 #include "DeprecatedAttribute.h"
 
-void DeprecatedAttribute::readInfo(ClassReader *reader) {
-}
+namespace classFile {
+    void DeprecatedAttribute::readInfo(ClassReader *reader) {
+    }
 
-DeprecatedAttribute::DeprecatedAttribute() : AttributeInfo(DEPRECATED) {
+    DeprecatedAttribute::DeprecatedAttribute() : AttributeInfo(DEPRECATED) {
+    }
 }

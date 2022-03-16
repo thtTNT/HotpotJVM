@@ -26,7 +26,7 @@ std::string *DirEntry::readClass(const std::string &className) {
         fin.close();
         return new std::string(bs->data(), bs->size());
     } else {
-        throw FileNotFoundException{};
+        return nullptr;
     }
 }
 

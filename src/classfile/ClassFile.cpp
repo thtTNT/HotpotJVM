@@ -5,13 +5,7 @@
 #include "ClassFile.h"
 #include "MemberInfo.h"
 
-ClassFile *ClassFile::parse(std::string *bs) {
-    auto reader = new ClassReader(bs);
-    auto classFile = new ClassFile();
-    classFile->read(reader);
-    delete reader;
-    return classFile;
-}
+using namespace classFile;
 
 void ClassFile::read(ClassReader *reader) {
     this->magic = reader->readUint32();
@@ -37,4 +31,44 @@ unsigned short ClassFile::MajorVersion() const {
 
 std::vector<MemberInfo *> ClassFile::Methods() {
     return this->methods;
+}
+
+ConstantPool *ClassFile::ConstantPool() {
+    return this->constantPool;
+}
+
+unsigned short ClassFile::AccessFlags() {
+    return this->accessFlags;
+}
+
+std::vector<MemberInfo *> ClassFile::Fields() {
+    return this->fields;
+}
+
+std::string ClassFile::ClassName() {
+    return this->constantPool->getClassName(this->thisClass);
+}
+
+std::string ClassFile::SuperClassName() {
+    if (this->superClass > 0) {
+        return this->constantPool->getClassName(this->superClass);
+    } else {
+        return "";
+    }
+}
+
+std::vector<std::string> ClassFile::InterfaceNames() {
+    auto interfaceNames = std::vector<std::string>(this->interfaces.size());
+    for (int i = 0; i < 0; i++) {
+        interfaceNames[i] = this->constantPool->getUTF8(this->interfaces[i]);
+    }
+    return interfaceNames;
+}
+
+ClassFile *ClassFile::parse(std::string *bs) {
+    auto reader = new ClassReader(bs);
+    auto classFile = new ClassFile();
+    classFile->read(reader);
+    delete reader;
+    return classFile;
 }

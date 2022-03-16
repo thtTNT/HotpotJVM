@@ -8,18 +8,20 @@
 
 #include "../AttributeInfo.h"
 
-class SourceFileAttribute : public AttributeInfo {
-private:
-    ConstantPool *constantPool;
-public:
-    unsigned short sourceFileIndex;
+namespace classFile {
+    class SourceFileAttribute : public AttributeInfo {
+    private:
+        ConstantPool *constantPool;
+    public:
+        unsigned short sourceFileIndex;
 
-    explicit SourceFileAttribute(ConstantPool *constantPool);
+        explicit SourceFileAttribute(ConstantPool *constantPool);
 
-    void readInfo(ClassReader *reader) override;
+        void readInfo(ClassReader *reader) override;
 
-    std::string filename();
-};
+        std::string filename();
+    };
+}
 
 
 #endif //HOTPOTJVM_SOURCEFILEATTRIBUTE_H

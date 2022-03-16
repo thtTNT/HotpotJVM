@@ -6,12 +6,13 @@
 
 #include <utility>
 
-void UnparsedAttribute::readInfo(ClassReader *reader) {
-    this->info = reader->readBytes(this->length);
-}
+namespace classFile {
+    void UnparsedAttribute::readInfo(ClassReader *reader) {
+        this->info = reader->readBytes(this->length);
+    }
 
-UnparsedAttribute::UnparsedAttribute(std::string name, unsigned int length) : AttributeInfo(UNPARSED) {
-    this->name = std::move(name);
-    this->length = length;
+    UnparsedAttribute::UnparsedAttribute(std::string name, unsigned int length) : AttributeInfo(UNPARSED) {
+        this->name = std::move(name);
+        this->length = length;
+    }
 }
-

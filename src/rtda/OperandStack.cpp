@@ -55,12 +55,12 @@ double OperandStack::popDouble() {
     return *(double *) &value;
 }
 
-void OperandStack::pushRef(Object *ref) {
+void OperandStack::pushRef(heap::Object *ref) {
     this->slots[this->size].ref = ref;
     this->size++;
 }
 
-Object *OperandStack::popRef() {
+heap::Object *OperandStack::popRef() {
     this->size--;
     return this->slots[this->size].ref;
 }

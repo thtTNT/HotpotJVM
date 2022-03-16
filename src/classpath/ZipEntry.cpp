@@ -24,18 +24,18 @@ std::string *ZipEntry::readClass(const std::string &className) {
     // Search for class
     struct zip_stat st{};
     zip_stat_init(&st);
-    error = zip_stat(z, className.c_str(), ZIP_FL_ENC_GUESS, &st);
+    error = zip_stat(z, (className + ".class").c_str(), ZIP_FL_ENC_GUESS, &st);
     if (st.valid == 0) {
         return nullptr;
     }
 
     char *content = new char[st.size];
-    zip_file *file = zip_fopen(z, className.c_str(), ZIP_FL_ENC_GUESS);
+    zip_file *file = zip_fopen(z, (className + ".class").c_str(), ZIP_FL_ENC_GUESS);
     zip_fread(file, content, st.size);
     zip_fclose(file);
 
     zip_close(z);
-    return new std::string(content);
+    return new std::string(content, st.size);
 }
 
 void ZipEntry::string() {

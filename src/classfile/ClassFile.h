@@ -13,44 +13,46 @@
 #include "AttributeInfo.h"
 #include "ClassReader.h"
 
-class ClassFile {
-private:
-    unsigned int magic;
-    unsigned short minorVersion;
-    unsigned short majorVersion;
-    ConstantPool *constantPool;
-    unsigned short accessFlags;
-    unsigned short thisClass;
-    unsigned short superClass;
-    std::vector<unsigned short> interfaces;
-    std::vector<MemberInfo *> fields;
-    std::vector<MemberInfo *> methods;
-    std::vector<AttributeInfo *> attributeInfo;
+namespace classFile {
+    class ClassFile {
+    private:
+        unsigned int magic;
+        unsigned short minorVersion;
+        unsigned short majorVersion;
+        ConstantPool *constantPool;
+        unsigned short accessFlags;
+        unsigned short thisClass;
+        unsigned short superClass;
+        std::vector<unsigned short> interfaces;
+        std::vector<MemberInfo *> fields;
+        std::vector<MemberInfo *> methods;
+        std::vector<AttributeInfo *> attributeInfo;
 
-public:
-    static ClassFile *parse(std::string *bs);
+    public:
+        static ClassFile *parse(std::string *bs);
 
-    void read(ClassReader *reader);
+        void read(ClassReader *reader);
 
-    unsigned short MinorVersion() const;
+        unsigned short MinorVersion() const;
 
-    unsigned short MajorVersion() const;
+        unsigned short MajorVersion() const;
 
-    ConstantPool ConstantPool();
+        ConstantPool *ConstantPool();
 
-    unsigned short AccessFlags();
+        unsigned short AccessFlags();
 
-    std::vector<MemberInfo> Fields();
+        std::vector<MemberInfo *> Fields();
 
-    std::vector<MemberInfo*> Methods();
+        std::vector<MemberInfo *> Methods();
 
-    std::string ClassName();
+        std::string ClassName();
 
-    std::string SuperClassName();
+        std::string SuperClassName();
 
-    std::vector<std::string> InterfaceNames();
+        std::vector<std::string> InterfaceNames();
 
-};
+    };
+}
 
 
 #endif //HOTPOTJVM_CLASSFILE_H

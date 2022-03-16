@@ -9,21 +9,23 @@
 #include <vector>
 #include "ClassReader.h"
 
-class ConstantInfo;
+namespace classFile {
+    class ConstantInfo;
 
-class ConstantPool {
-public:
-    std::vector<ConstantInfo *> constantInfoList;
+    class ConstantPool {
+    public:
+        std::vector<ConstantInfo *> constantInfoList;
 
-    ConstantInfo *getConstantInfo(unsigned short index);
+        ConstantInfo *getConstantInfo(unsigned short index);
 
-    std::string getClassName(unsigned short index);
+        std::string getClassName(unsigned short index);
 
-    std::string getUTF8(unsigned short index);
+        std::string getUTF8(unsigned short index);
 
-};
+    };
 
-ConstantPool *readConstantPool(ClassReader *reader);
+    ConstantPool *readConstantPool(ClassReader *reader);
+}
 
 
 #endif //HOTPOTJVM_CONSTANTPOOL_H

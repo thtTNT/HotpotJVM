@@ -4,7 +4,9 @@
 
 #include "ConstantFloatInfo.h"
 
-void ConstantFloatInfo::readInfo(ClassReader *reader) {
-    auto data = reader->readUint32();
-    this->value = *(float *) &data;
+namespace classFile {
+    void ConstantFloatInfo::readInfo(ClassReader *reader) {
+        auto data = reader->readUint32();
+        this->value = *(float *) &data;
+    }
 }

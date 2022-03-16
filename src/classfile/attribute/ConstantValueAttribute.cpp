@@ -4,10 +4,12 @@
 
 #include "ConstantValueAttribute.h"
 
-void ConstantValueAttribute::readInfo(ClassReader *reader) {
-    this->constantValueIndex = reader->readUint16();
-}
+namespace classFile {
+    void ConstantValueAttribute::readInfo(ClassReader *reader) {
+        this->constantValueIndex = reader->readUint16();
+    }
 
-ConstantValueAttribute::ConstantValueAttribute() : AttributeInfo(CONSTANT_VALUE) {
+    ConstantValueAttribute::ConstantValueAttribute() : AttributeInfo(CONSTANT_VALUE) {
 
+    }
 }

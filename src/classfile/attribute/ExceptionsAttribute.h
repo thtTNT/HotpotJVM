@@ -8,16 +8,17 @@
 
 #include "../AttributeInfo.h"
 
-class ExceptionsAttribute : public AttributeInfo {
-private:
-    std::vector<unsigned short> indexTable;
-public:
-    ExceptionsAttribute();
+namespace classFile {
+    class ExceptionsAttribute : public AttributeInfo {
+    private:
+        std::vector<unsigned short> indexTable;
+    public:
+        ExceptionsAttribute();
 
-    void readInfo(ClassReader *reader) override;
+        void readInfo(ClassReader *reader) override;
 
-    std::vector<unsigned short> getIndexTable();
-};
-
+        std::vector<unsigned short> getIndexTable();
+    };
+}
 
 #endif //HOTPOTJVM_EXCEPTIONSATTRIBUTE_H

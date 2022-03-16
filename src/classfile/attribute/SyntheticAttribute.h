@@ -8,12 +8,13 @@
 
 #include "../AttributeInfo.h"
 
-class SyntheticAttribute : public AttributeInfo {
-public:
-    SyntheticAttribute();
+namespace classFile {
+    class SyntheticAttribute : public AttributeInfo {
+    public:
+        SyntheticAttribute();
 
-    void readInfo(ClassReader *reader) override;
-};
-
+        void readInfo(ClassReader *reader) override;
+    };
+}
 
 #endif //HOTPOTJVM_SYNTHETICATTRIBUTE_H

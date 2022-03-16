@@ -8,14 +8,16 @@
 
 #include "../AttributeInfo.h"
 
-class ConstantValueAttribute : public AttributeInfo {
-public:
-    unsigned short constantValueIndex = 0;
+namespace classFile {
+    class ConstantValueAttribute : public AttributeInfo {
+    public:
+        unsigned short constantValueIndex = 0;
 
-    ConstantValueAttribute();
+        ConstantValueAttribute();
 
-    void readInfo(ClassReader *reader) override;
-};
+        void readInfo(ClassReader *reader) override;
+    };
+}
 
 
 #endif //HOTPOTJVM_CONSTANTVALUEATTRIBUTE_H

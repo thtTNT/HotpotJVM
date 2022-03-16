@@ -4,8 +4,10 @@
 
 #include "ConstantUTF8Info.h"
 
-void ConstantUTF8Info::readInfo(ClassReader *reader) {
-    auto length = reader->readUint16();
-    auto bytes = reader->readBytes(length);
-    this->value = std::string(bytes, length);
+namespace classFile {
+    void ConstantUTF8Info::readInfo(ClassReader *reader) {
+        auto length = reader->readUint16();
+        auto bytes = reader->readBytes(length);
+        this->value = std::string(bytes, length);
+    }
 }

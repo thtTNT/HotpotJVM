@@ -10,6 +10,7 @@
 #include <iostream>
 #include "../exception/CommandParseError.h"
 
+
 struct CommandInfo {
     bool helpFlag = false;
     bool versionFlag = false;

@@ -8,18 +8,20 @@
 #include <vector>
 #include "../AttributeInfo.h"
 
-struct LineNumberTableEntry {
-    unsigned short startPC;
-    unsigned short lineNumber;
-};
+namespace classFile {
+    struct LineNumberTableEntry {
+        unsigned short startPC;
+        unsigned short lineNumber;
+    };
 
-class LineNumberTableAttribute : public AttributeInfo {
-public:
-    LineNumberTableAttribute();
+    class LineNumberTableAttribute : public AttributeInfo {
+    public:
+        LineNumberTableAttribute();
 
-    std::vector<LineNumberTableEntry> lineNumberTable;
-    void readInfo(ClassReader *reader) override;
-};
+        std::vector<LineNumberTableEntry> lineNumberTable;
 
+        void readInfo(ClassReader *reader) override;
+    };
+}
 
 #endif //HOTPOTJVM_LINENUMBERTABLEATTRIBUTE_H

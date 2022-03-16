@@ -25,7 +25,7 @@ public:
 
     Frame *currentFrame();
 
-    Frame *initFrame(unsigned maxLocals, unsigned maxStack);
+    Frame *initFrame(heap::Method *method);
 
 };
 

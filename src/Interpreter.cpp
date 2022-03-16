@@ -5,14 +5,9 @@
 #include "Interpreter.h"
 #include "rtda/Thread.h"
 
-void interpret(MemberInfo *memberInfo) {
-    auto codeAttr = memberInfo->getCodeAttributes();
-    auto maxLocals = codeAttr->maxLocals;
-    auto maxStack = codeAttr->maxStack;
-    auto byteCode = codeAttr->code;
-
+void interpret(heap::Method *method) {
     auto thread = newThread();
-    auto frame = thread->initFrame(maxLocals, maxStack);
+    auto frame = thread->initFrame(method);
     thread->pushFrame(frame);
-    loop(thread, byteCode);
+    loop(thread, method->code);
 }

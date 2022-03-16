@@ -8,14 +8,15 @@
 
 #include "../ConstantInfo.h"
 
-class ConstantFloatInfo : public ConstantInfo {
-public:
-    float value = 0.0;
+namespace classFile {
+    class ConstantFloatInfo : public ConstantInfo {
+    public:
+        float value = 0.0;
 
-    explicit ConstantFloatInfo() : ConstantInfo(CONSTANT_FLOAT) {};
+        explicit ConstantFloatInfo() : ConstantInfo(CONSTANT_FLOAT) {};
 
-    void readInfo(ClassReader *reader) override;
-};
-
+        void readInfo(ClassReader *reader) override;
+    };
+}
 
 #endif //HOTPOTJVM_CONSTANTFLOATINFO_H

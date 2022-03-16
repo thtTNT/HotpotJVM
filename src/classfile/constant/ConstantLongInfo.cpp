@@ -4,6 +4,8 @@
 
 #include "ConstantLongInfo.h"
 
-void ConstantLongInfo::readInfo(ClassReader *reader) {
-    this->value = (long) reader->readUint64();
+namespace classFile {
+    void ConstantLongInfo::readInfo(ClassReader *reader) {
+        this->value = (long) reader->readUint64();
+    }
 }

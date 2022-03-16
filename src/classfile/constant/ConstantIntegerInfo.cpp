@@ -4,7 +4,9 @@
 
 #include "ConstantIntegerInfo.h"
 
-void ConstantIntegerInfo::readInfo(ClassReader *reader) {
-    this->value = (int) reader->readUint32();
+namespace classFile {
+    void ConstantIntegerInfo::readInfo(ClassReader *reader) {
+        this->value = (int) reader->readUint32();
+    }
 }
 

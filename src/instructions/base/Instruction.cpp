@@ -46,6 +46,13 @@
 #include "../extended/Wide.h"
 #include "../extended/IfNull.h"
 #include "../extended/GotoW.h"
+#include "../references/New.h"
+#include "../references/Static.h"
+#include "../references/Field.h"
+#include "../references/CheckCast.h"
+#include "../references/InstanceOf.h"
+#include "../constant/Ldc.h"
+#include "../references/Invoke.h"
 
 void NoOperandsInstruction::fetchOperands(ByteCodeReader *reader) {
 
@@ -103,6 +110,12 @@ Instruction *newInstruction(unsigned char opcode) {
             return new BIPUSH();
         case INS_CODE_SIPUSH:
             return new SIPUSH();
+        case INS_CODE_LDC:
+            return new LDC();
+        case INS_CODE_LDC_W:
+            return new LDC_W();
+        case INS_CODE_LDC2_W:
+            return new LDC2_W();
         case INS_CODE_ILOAD:
             return new ILOAD();
         case INS_CODE_LLOAD:
@@ -361,6 +374,24 @@ Instruction *newInstruction(unsigned char opcode) {
             return new TABLE_SWITCH();
         case INS_CODE_LOOKUP_SWITCH:
             return new LOOKUP_SWITCH();
+        case INS_CODE_GETSTATIC:
+            return new GET_STATIC();
+        case INS_CODE_PUTSTATIC:
+            return new PUT_STATIC();
+        case INS_CODE_GETFIELD:
+            return new GET_FIELD();
+        case INS_CODE_PUTFIELD:
+            return new PUT_FIELD();
+        case INS_CODE_INVOKEVIRUAL:
+            return new INVOKE_VIRTUAL();
+        case INS_CODE_INVOKESPECIAL:
+            return new INVOKE_SPECIAL();
+        case INS_CODE_NEW:
+            return new NEW();
+        case INS_CODE_CHECKCAST:
+            return new CHECK_CAST();
+        case INS_CODE_INSTANCEOF:
+            return new INSTANCE_OF();
         case INS_CODE_WIDE:
             return new WIDE();
         case INS_CODE_IFNULL:

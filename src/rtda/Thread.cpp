@@ -32,8 +32,8 @@ Frame *Thread::currentFrame() {
     return this->stack->getTop();
 }
 
-Frame *Thread::initFrame(unsigned maxLocals, unsigned maxStack) {
-    return newFrame(this, maxLocals, maxStack);
+Frame *Thread::initFrame(heap::Method *method) {
+    return new Frame(this, method);
 }
 
 Thread *newThread() {

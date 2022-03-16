@@ -9,18 +9,20 @@
 #include "../ConstantInfo.h"
 #include <string>
 
-class ConstantClassInfo : public ConstantInfo {
-private:
-    ConstantPool *constantPool;
-public:
-    unsigned short nameIndex = 0;
+namespace classFile {
 
-    explicit ConstantClassInfo(ConstantPool *constantPool);
+    class ConstantClassInfo : public ConstantInfo {
+    private:
+        ConstantPool *constantPool;
+    public:
+        unsigned short nameIndex = 0;
 
-    void readInfo(ClassReader *reader) override;
+        explicit ConstantClassInfo(ConstantPool *constantPool);
 
-    std::string getName() const;
-};
+        void readInfo(ClassReader *reader) override;
 
+        std::string getName() const;
+    };
 
+}
 #endif //HOTPOTJVM_CONSTANTCLASSINFO_H

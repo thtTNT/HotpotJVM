@@ -4,14 +4,16 @@
 
 #include "ExceptionsAttribute.h"
 
-void ExceptionsAttribute::readInfo(ClassReader *reader) {
-    this->indexTable = reader->readUint16s();
-}
+namespace classFile {
+    void ExceptionsAttribute::readInfo(ClassReader *reader) {
+        this->indexTable = reader->readUint16s();
+    }
 
-std::vector<unsigned short> ExceptionsAttribute::getIndexTable() {
-    return this->indexTable;
-}
+    std::vector<unsigned short> ExceptionsAttribute::getIndexTable() {
+        return this->indexTable;
+    }
 
-ExceptionsAttribute::ExceptionsAttribute() : AttributeInfo(EXCEPTIONS) {
+    ExceptionsAttribute::ExceptionsAttribute() : AttributeInfo(EXCEPTIONS) {
 
+    }
 }

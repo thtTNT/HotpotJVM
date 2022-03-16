@@ -4,15 +4,16 @@
 
 #include "ConstantStringInfo.h"
 
-ConstantStringInfo::ConstantStringInfo(ConstantPool *constantPool) : ConstantInfo(CONSTANT_STRING) {
-    this->constantPool = constantPool;
-}
+namespace classFile {
+    ConstantStringInfo::ConstantStringInfo(ConstantPool *constantPool) : ConstantInfo(CONSTANT_STRING) {
+        this->constantPool = constantPool;
+    }
 
-void ConstantStringInfo::readInfo(ClassReader *reader) {
-    this->index = reader->readUint16();
-}
+    void ConstantStringInfo::readInfo(ClassReader *reader) {
+        this->index = reader->readUint16();
+    }
 
-std::string ConstantStringInfo::getValue() {
-    return this->constantPool->getUTF8(this->index);
+    std::string ConstantStringInfo::getValue() {
+        return this->constantPool->getUTF8(this->index);
+    }
 }
-

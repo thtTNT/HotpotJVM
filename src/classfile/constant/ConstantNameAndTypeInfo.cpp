@@ -4,7 +4,22 @@
 
 #include "ConstantNameAndTypeInfo.h"
 
-void ConstantNameAndTypeInfo::readInfo(ClassReader *reader) {
-    this->nameIndex = reader->readUint16();
-    this->descriptorIndex = reader->readUint16();
+namespace classFile {
+    void ConstantNameAndTypeInfo::readInfo(ClassReader *reader) {
+        this->nameIndex = reader->readUint16();
+        this->descriptorIndex = reader->readUint16();
+    }
+
+    std::string ConstantNameAndTypeInfo::getName() {
+        return this->constantPool->getUTF8(this->nameIndex);
+    }
+
+    std::string ConstantNameAndTypeInfo::getDescription() {
+        return this->constantPool->getUTF8(this->descriptorIndex);
+    }
+
+    ConstantNameAndTypeInfo::ConstantNameAndTypeInfo(ConstantPool *constantPool) : ConstantInfo(
+            CONSTANT_NAME_AND_TYPE) {
+        this->constantPool = constantPool;
+    }
 }

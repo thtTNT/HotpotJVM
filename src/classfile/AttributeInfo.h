@@ -22,19 +22,21 @@ enum AttributeType {
     UNPARSED
 };
 
-class AttributeInfo {
-public:
-    AttributeType type;
+namespace classFile {
+    class AttributeInfo {
+    public:
+        AttributeType type;
 
-    AttributeInfo(AttributeType type);
+        AttributeInfo(AttributeType type);
 
-    virtual void readInfo(ClassReader *reader) = 0;
-};
+        virtual void readInfo(ClassReader *reader) = 0;
+    };
 
-std::vector<AttributeInfo *> readAttributes(ClassReader *reader, ConstantPool *constantPool);
+    std::vector<AttributeInfo *> readAttributes(ClassReader *reader, ConstantPool *constantPool);
 
-AttributeInfo *readAttribute(ClassReader *reader, ConstantPool *constantPool);
+    AttributeInfo *readAttribute(ClassReader *reader, ConstantPool *constantPool);
 
-AttributeInfo *newAttributeInfo(std::string name, unsigned int length, ConstantPool *constantPool);
+    AttributeInfo *newAttributeInfo(std::string name, unsigned int length, ConstantPool *constantPool);
+}
 
 #endif //HOTPOTJVM_ATTRIBUTEINFO_H

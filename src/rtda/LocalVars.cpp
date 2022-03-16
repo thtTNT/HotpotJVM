@@ -49,11 +49,11 @@ double LocalVars::getDouble(unsigned int index) {
     return *(double *) &value;
 }
 
-void LocalVars::setObject(unsigned int index, Object *object) {
+void LocalVars::setObject(unsigned int index, heap::Object *object) {
     this->slots[index].ref = object;
 }
 
-Object *LocalVars::getObject(unsigned int index) {
+heap::Object *LocalVars::getObject(unsigned int index) {
     return this->slots[index].ref;
 }
 

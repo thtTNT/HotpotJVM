@@ -30,9 +30,9 @@ public:
 
     double popDouble();
 
-    void pushRef(Object *ref);
+    void pushRef(heap::Object *ref);
 
-    Object *popRef();
+    heap::Object *popRef();
 
     void pushSlot(Slot slot);
 

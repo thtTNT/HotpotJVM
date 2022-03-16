@@ -42,8 +42,3 @@ Entry *createEntry(const std::string &path) {
     }
     return new DirEntry(path);
 }
-
-std::string *Entry::readClass(const std::string &className) {
-    return nullptr;
-}
-

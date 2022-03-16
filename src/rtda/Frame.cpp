@@ -4,12 +4,13 @@
 
 #include "Frame.h"
 
-Frame::Frame(Thread *thread, unsigned int maxLocals, unsigned int maxStack) {
+Frame::Frame(Thread *thread, heap::Method *method) {
     this->thread = thread;
-    this->localVars = newLocalVars(maxLocals);
-    this->operandStack = newOperandStack(maxStack);
+    this->method = method;
+    this->localVars = newLocalVars(method->maxLocals);
+    this->operandStack = newOperandStack(method->maxStack);
 }
 
-Frame *newFrame(Thread *thread, unsigned int maxLocals, unsigned int maxStack) {
-    return new Frame(thread, maxLocals, maxStack);
+heap::Method *Frame::getMethod() const {
+    return method;
 }

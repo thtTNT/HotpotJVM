@@ -8,10 +8,13 @@
 
 #include "LocalVars.h"
 #include "OperandStack.h"
+#include "../heap/Method.h"
 
 class Thread;
 
 class Frame {
+private:
+    heap::Method *method;
 public:
     Frame *last = nullptr;
     LocalVars *localVars = nullptr;
@@ -19,10 +22,10 @@ public:
     Thread *thread;
     int nextPC = 0;
 
-    Frame(Thread *thread, unsigned maxLocals, unsigned maxStack);
-};
+    Frame(Thread *thread, heap::Method *method);
 
-Frame *newFrame(Thread *thread, unsigned int maxLocals, unsigned int maxStack);
+    heap::Method *getMethod() const;
+};
 
 
 #endif //HOTPOTJVM_FRAME_H

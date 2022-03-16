@@ -9,32 +9,37 @@
 #include "ConstantPool.h"
 #include "AttributeInfo.h"
 #include "attribute/CodeAttribute.h"
+#include "attribute/ConstantValueAttribute.h"
 
-class MemberInfo {
-private:
-    ConstantPool *constantPool;
-    unsigned short accessFlags;
-    unsigned short nameIndex;
-    unsigned short descriptorIndex;
-    std::vector<AttributeInfo *> attributes;
+namespace classFile {
+    class MemberInfo {
+    private:
+        ConstantPool *constantPool;
+        unsigned short accessFlags;
+        unsigned short nameIndex;
+        unsigned short descriptorIndex;
+        std::vector<AttributeInfo *> attributes;
 
-public:
+    public:
 
-    MemberInfo(ConstantPool *constantPool, unsigned short accessFlags, unsigned short nameIndex,
-               unsigned short descriptorIndex, std::vector<AttributeInfo *> attributes);
+        MemberInfo(ConstantPool *constantPool, unsigned short accessFlags, unsigned short nameIndex,
+                   unsigned short descriptorIndex, std::vector<AttributeInfo *> attributes);
 
-    unsigned short getAccessFlags() const;
+        unsigned short getAccessFlags() const;
 
-    std::string getName();
+        std::string getName();
 
-    std::string getDescriptor();
+        std::string getDescriptor();
 
-    CodeAttribute *getCodeAttributes();
-};
+        CodeAttribute *getCodeAttribute();
 
-std::vector<MemberInfo *> readMembers(ClassReader *reader, ConstantPool *constantPool);
+        ConstantValueAttribute *getConstantValueAttribute();
+    };
 
-MemberInfo *readMember(ClassReader *reader, ConstantPool *constantPool);
+    std::vector<MemberInfo *> readMembers(ClassReader *reader, ConstantPool *constantPool);
+
+    MemberInfo *readMember(ClassReader *reader, ConstantPool *constantPool);
+}
 
 
 #endif //HOTPOTJVM_MEMBERINFO_H

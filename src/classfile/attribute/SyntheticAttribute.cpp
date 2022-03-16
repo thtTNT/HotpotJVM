@@ -4,9 +4,11 @@
 
 #include "SyntheticAttribute.h"
 
-void SyntheticAttribute::readInfo(ClassReader *reader) {
-}
+namespace classFile {
+    void SyntheticAttribute::readInfo(ClassReader *reader) {
+    }
 
-SyntheticAttribute::SyntheticAttribute() : AttributeInfo(SYNTHETIC) {
+    SyntheticAttribute::SyntheticAttribute() : AttributeInfo(SYNTHETIC) {
 
+    }
 }

@@ -9,7 +9,9 @@
 #include "constant/ConstantClassInfo.h"
 #include "../exception/ConstantNotFound.h"
 
-ConstantPool *readConstantPool(ClassReader *reader) {
+using namespace classFile;
+
+ConstantPool *classFile::readConstantPool(ClassReader *reader) {
     auto constantPool = new ConstantPool();
     auto count = reader->readUint16();
     constantPool->constantInfoList = std::vector<ConstantInfo *>(count);

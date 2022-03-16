@@ -4,7 +4,9 @@
 
 #include "ConstantDoubleInfo.h"
 
-void ConstantDoubleInfo::readInfo(ClassReader *reader) {
-    auto data = reader->readUint64();
-    this->value = *(double *) &data;
+namespace classFile {
+    void ConstantDoubleInfo::readInfo(ClassReader *reader) {
+        auto data = reader->readUint64();
+        this->value = *(double *) &data;
+    }
 }

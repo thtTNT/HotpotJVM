@@ -8,14 +8,16 @@
 
 #include "../ConstantInfo.h"
 
-class ConstantDoubleInfo : public ConstantInfo {
-public:
-    double value = 0.0;
+namespace classFile {
+    class ConstantDoubleInfo : public ConstantInfo {
+    public:
+        double value = 0.0;
 
-    explicit ConstantDoubleInfo() : ConstantInfo(CONSTANT_DOUBLE) {};
+        explicit ConstantDoubleInfo() : ConstantInfo(CONSTANT_DOUBLE) {};
 
-    void readInfo(ClassReader *reader) override;
-};
+        void readInfo(ClassReader *reader) override;
+    };
 
+}
 
 #endif //HOTPOTJVM_CONSTANTDOUBLEINFO_H

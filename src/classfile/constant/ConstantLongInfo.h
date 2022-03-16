@@ -8,14 +8,16 @@
 
 #include "../ConstantInfo.h"
 
-class ConstantLongInfo : public ConstantInfo {
-public:
-    long value = 0;
+namespace classFile {
+    class ConstantLongInfo : public ConstantInfo {
+    public:
+        long value = 0;
 
-    explicit ConstantLongInfo() : ConstantInfo(CONSTANT_LONG) {};
+        explicit ConstantLongInfo() : ConstantInfo(CONSTANT_LONG) {};
 
-    void readInfo(ClassReader *reader) override;
-};
+        void readInfo(ClassReader *reader) override;
+    };
+}
 
 
 #endif //HOTPOTJVM_CONSTANTLONGINFO_H

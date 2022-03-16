@@ -8,15 +8,21 @@
 
 #include "../ConstantInfo.h"
 
-class ConstantNameAndTypeInfo : public ConstantInfo {
-private:
-    unsigned short nameIndex = 0;
-    unsigned short descriptorIndex = 0;
-public:
-    ConstantNameAndTypeInfo() : ConstantInfo(CONSTANT_NAME_AND_TYPE) {};
+namespace classFile {
+    class ConstantNameAndTypeInfo : public ConstantInfo {
+    private:
+        ConstantPool *constantPool;
+        unsigned short nameIndex = 0;
+        unsigned short descriptorIndex = 0;
+    public:
+        ConstantNameAndTypeInfo(ConstantPool *constantPool);
 
-    void readInfo(ClassReader *reader) override;
-};
+        void readInfo(ClassReader *reader) override;
 
+        std::string getName();
+
+        std::string getDescription();
+    };
+}
 
 #endif //HOTPOTJVM_CONSTANTNAMEANDTYPEINFO_H

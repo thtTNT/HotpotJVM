@@ -4,15 +4,16 @@
 
 #include "ConstantClassInfo.h"
 
-void ConstantClassInfo::readInfo(ClassReader *reader) {
-    this->nameIndex = reader->readUint16();
-}
+namespace classFile {
+    void ConstantClassInfo::readInfo(ClassReader *reader) {
+        this->nameIndex = reader->readUint16();
+    }
 
+    ConstantClassInfo::ConstantClassInfo(ConstantPool *constantPool) : ConstantInfo(CONSTANT_CLASS) {
+        this->constantPool = constantPool;
+    }
 
-ConstantClassInfo::ConstantClassInfo(ConstantPool *constantPool) : ConstantInfo(CONSTANT_CLASS) {
-    this->constantPool = constantPool;
-}
-
-std::string ConstantClassInfo::getName() const {
-    return this->constantPool->getUTF8(this->nameIndex);
+    std::string ConstantClassInfo::getName() const {
+        return this->constantPool->getUTF8(this->nameIndex);
+    }
 }

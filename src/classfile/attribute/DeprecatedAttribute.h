@@ -8,12 +8,14 @@
 
 #include "../AttributeInfo.h"
 
-class DeprecatedAttribute : public AttributeInfo {
-public:
-    DeprecatedAttribute();
+namespace classFile {
+    class DeprecatedAttribute : public AttributeInfo {
+    public:
+        DeprecatedAttribute();
 
-    void readInfo(ClassReader *reader) override;
-};
+        void readInfo(ClassReader *reader) override;
+    };
 
+}
 
 #endif //HOTPOTJVM_DEPRECATEDATTRIBUTE_H

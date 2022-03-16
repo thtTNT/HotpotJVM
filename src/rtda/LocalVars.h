@@ -28,9 +28,9 @@ public:
 
     double getDouble(unsigned index);
 
-    void setObject(unsigned index, Object *object);
+    void setObject(unsigned index, heap::Object *object);
 
-    Object *getObject(unsigned index);
+    heap::Object *getObject(unsigned index);
 };
 
 LocalVars *newLocalVars(unsigned int maxLocals);
