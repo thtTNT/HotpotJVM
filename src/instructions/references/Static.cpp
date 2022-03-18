@@ -3,9 +3,10 @@
 //
 
 #include "Static.h"
-#include "../../heap/Field.h";
+#include "../../heap/Field.h"
 #include "../../exception/IncompatibleClassChangeError.h"
 #include "../../exception/IllegalAccessError.h"
+#include "../base/MethodLogic.h"
 
 void PUT_STATIC::execute(Frame *frame) {
     auto currentMethod = frame->getMethod();
@@ -14,6 +15,12 @@ void PUT_STATIC::execute(Frame *frame) {
     auto fieldRef = (heap::FieldRef *) constantPool->getConstant(this->index).symRef;
     auto field = fieldRef->resolvedField();
     auto clazz = field->clazz;
+
+    if (!clazz->isInitStarted()) {
+        frame->revertNextPC();
+        initClass(frame->thread, clazz);
+        return;
+    }
 
     if (!field->isStatic()) {
         throw IncompatibleClassChangeError();
@@ -60,6 +67,12 @@ void GET_STATIC::execute(Frame *frame) {
     auto fieldRef = (heap::FieldRef *) constantPool->getConstant(this->index).symRef;
     auto field = fieldRef->resolvedField();
     auto clazz = field->clazz;
+
+    if (!clazz->isInitStarted()) {
+        frame->revertNextPC();
+        initClass(frame->thread, clazz);
+        return;
+    }
 
     if (!field->isStatic()) {
         throw IncompatibleClassChangeError();

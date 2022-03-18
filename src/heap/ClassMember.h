@@ -20,6 +20,14 @@ namespace heap {
 
         ConstantPool *getConstantPool();
 
+        bool isPublic();
+
+        bool isProtected();
+
+        bool isPrivate();
+
+        bool isAccessibleTo(Class *clazz);
+
         void copyMemberInfo(classFile::MemberInfo *memberInfo);
     };
 }

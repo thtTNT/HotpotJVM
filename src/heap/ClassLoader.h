@@ -19,6 +19,8 @@ namespace heap {
     private:
         Class *loadNonArrayClass(std::string name);
 
+        Class *loadArrayClass(std::string name);
+
         Class *parseClass(std::string data);
 
         void resolveSuperClass(Class *clazz);

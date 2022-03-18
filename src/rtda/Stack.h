@@ -21,6 +21,8 @@ public:
     Frame *pop();
 
     Frame *getTop();
+
+    bool isEmpty();
 };
 
 Stack *newStack(unsigned int maxSize);

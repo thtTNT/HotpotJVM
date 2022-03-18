@@ -60,13 +60,35 @@ namespace heap {
 
     class MethodRef : public MemberRef {
         Method *method;
+
+        void resolveMethodRef();
+
+        Method *lookupMethod(Class *destClass, std::string methodName, std::string descriptor);
+
+
+    public:
+        Method *resolvedMethod();
+
     };
+
+    Method *lookupMethodInInterface(std::vector<Class *> interfaces, std::string name, std::string descriptor);
+
+    heap::Method *lookupMethodInClass(Class *destClass, std::string name, std::string descriptor);
+
 
     MemberRef *newMethodRef(ConstantPool *constantPool, classFile::ConstantMethodRefInfo refInfo);
 
     class InterfaceMethodRef : public MemberRef {
         Method *method;
+    public:
+        heap::Method *resolvedInterfaceMethod();
+
+        void resolveInterfaceMethodRef();
+
     };
+
+    Method *
+    lookupInterfaceMethod(Class *destClass, const std::string &methodName, const std::string &methodDescriptor);
 
     InterfaceMethodRef *
     newInterfaceMethodRef(ConstantPool *constantPool, classFile::ConstantInterfaceMethodRefInfo refInfo);

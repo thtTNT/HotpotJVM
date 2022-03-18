@@ -27,9 +27,10 @@ public:
 
     Frame *initFrame(heap::Method *method);
 
+    bool isStackEmpty();
 };
 
-[[noreturn]] void loop(Thread *thread, std::string bytecode);
+void loop(Thread *thread);
 
 Thread *newThread();
 

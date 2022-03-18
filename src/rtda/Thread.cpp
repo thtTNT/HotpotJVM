@@ -36,21 +36,28 @@ Frame *Thread::initFrame(heap::Method *method) {
     return new Frame(this, method);
 }
 
+bool Thread::isStackEmpty() {
+    return this->stack->isEmpty();
+}
+
 Thread *newThread() {
     return new Thread();
 }
 
-[[noreturn]] void loop(Thread *thread, std::string bytecode) {
-    auto frame = thread->popFrame();
+void loop(Thread *thread) {
     auto reader = new ByteCodeReader();
     while (true) {
+        auto frame = thread->currentFrame();
         auto pc = frame->nextPC;
         thread->setPC(pc);
-        reader->reset(bytecode, pc);
+        reader->reset(frame->getMethod()->code, pc);
         auto opcode = reader->readUint8();
         auto ins = newInstruction(opcode);
         ins->fetchOperands(reader);
         frame->nextPC = reader->pc;
         ins->execute(frame);
+        if (thread->isStackEmpty()) {
+            return;
+        }
     }
 }

@@ -8,13 +8,27 @@
 
 #include "../base/Instruction.h"
 
-class INVOKE_SPECIAL : public Index16Instruction{
+class INVOKE_STATIC : public Index16Instruction {
 public:
     void execute(Frame *frame) override;
 };
 
-class INVOKE_VIRTUAL : public Index16Instruction{
+class INVOKE_SPECIAL : public Index16Instruction {
 public:
+    void execute(Frame *frame) override;
+};
+
+class INVOKE_VIRTUAL : public Index16Instruction {
+public:
+    void execute(Frame *frame) override;
+};
+
+class INVOKE_INTERFACE : public Instruction {
+private:
+    int index;
+public:
+    void fetchOperands(ByteCodeReader *reader) override;
+
     void execute(Frame *frame) override;
 };
 

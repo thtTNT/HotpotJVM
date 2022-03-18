@@ -55,10 +55,18 @@ namespace heap {
         unsigned instanceSlotCount;
         unsigned staticSlotCount;
         Slots *staticVars;
+        bool initStarted = false;
+
+        Class();
+
+        Class(unsigned short accessFlags, const std::string &name, ClassLoader *loader, Class *superClass,
+              const std::vector<Class *> &interfaceClass);
 
         bool isPublic();
 
         bool isFinal();
+
+        bool isSuper();
 
         bool isInterface();
 
@@ -74,19 +82,31 @@ namespace heap {
 
         bool isSubClassOf(Class *clazz);
 
+        bool isSuperClassOf(Class *clazz);
+
         bool isImplements(Class *interface);
 
         std::string getPackageName();
 
         Object *newObject();
 
+        Object *newArray(unsigned count);
+
         bool isAssignableForm(Class *pClass);
 
         bool isSubInterfaceOf(Class *interface);
 
+        bool isArray();
+
         Method *getStaticMethod(std::string methodName, std::string descriptor);
 
         Method *getMainMethod();
+
+        bool isInitStarted() const;
+
+        void startInit();
+
+        Method *getClinitMethod();
     };
 
     Class *newClass(ClassFile *classFile);

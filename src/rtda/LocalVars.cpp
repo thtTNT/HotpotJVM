@@ -57,6 +57,14 @@ heap::Object *LocalVars::getObject(unsigned int index) {
     return this->slots[index].ref;
 }
 
+void LocalVars::setSlot(unsigned int index, Slot slot) {
+    this->slots[index] = slot;
+}
+
+Slot LocalVars::getSlot(unsigned int index) {
+    return this->slots[index];
+}
+
 
 
 

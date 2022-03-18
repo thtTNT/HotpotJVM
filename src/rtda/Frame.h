@@ -25,6 +25,8 @@ public:
     Frame(Thread *thread, heap::Method *method);
 
     heap::Method *getMethod() const;
+
+    void revertNextPC();
 };
 
 

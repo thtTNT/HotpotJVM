@@ -10,19 +10,25 @@
 #include <string>
 
 namespace heap {
+    struct MethodDescriptor {
+        std::vector<std::string> parameterTypes;
+        std::string returnType;
+    };
+
     class Method : public ClassMember {
+    private:
+        unsigned argSlotCount;
+
+        void calculateArgSlotCount();
+
+        void copyAttribute(classFile::MemberInfo *classFileMethod);
+
     public:
         unsigned maxStack;
         unsigned maxLocals;
         std::string code;
 
-        void copyAttribute(classFile::MemberInfo *classFileMethod);
-
-        bool isPublic();
-
-        bool isPrivate();
-
-        bool isProtected();
+        Method(Class *clazz, classFile::MemberInfo *classFileMethod);
 
         bool isStatic();
 
@@ -42,9 +48,13 @@ namespace heap {
 
         bool isSynthetic();
 
+        unsigned getArgSlotCount();
+
     };
 
     std::vector<Method *> newMethods(Class *clazz, std::vector<classFile::MemberInfo *> classFileMethods);
+
+    MethodDescriptor parseDescriptor(std::string descriptor);
 }
 
 

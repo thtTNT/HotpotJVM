@@ -19,3 +19,29 @@ Class *ClassMember::getClass() const {
 ConstantPool *ClassMember::getConstantPool() {
     return this->clazz->constantPool;
 }
+
+bool ClassMember::isAccessibleTo(Class *otherClass) {
+    if (this->isPublic()) {
+        return true;
+    }
+    if (this->isProtected()) {
+        return this->clazz == otherClass || otherClass->isSubClassOf(this->clazz) ||
+               this->clazz->getPackageName() == otherClass->getPackageName();
+    }
+    if (!this->isPrivate()) {
+        return this->clazz->getPackageName() == otherClass->getPackageName();
+    }
+    return otherClass == this->clazz;
+}
+
+bool ClassMember::isPublic() {
+    return this->accessFlags & ACC_PUBLIC;
+}
+
+bool ClassMember::isProtected() {
+    return this->accessFlags & ACC_PROTECTED;
+}
+
+bool ClassMember::isPrivate() {
+    return this->accessFlags & ACC_PRIVATE;
+}

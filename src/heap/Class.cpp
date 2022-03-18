@@ -5,6 +5,7 @@
 #include "Class.h"
 #include "Method.h"
 #include "Field.h"
+#include "../exception/RuntimeException.h"
 
 namespace heap {
 
@@ -121,5 +122,61 @@ namespace heap {
         }
         return nullptr;
     }
+
+    bool Class::isSuper() {
+        return this->accessFlags & ACC_SUPER;
+    }
+
+    bool Class::isSuperClassOf(Class *other) {
+        return other->isSubClassOf(this);
+    }
+
+    bool Class::isArray() {
+        return this->name[0] == '[';
+    }
+
+    Object *Class::newArray(unsigned count) {
+        if (!this->isArray()) {
+            throw RuntimeException("Not array class: " + this->name);
+        }
+
+        if (this->name == "[Z") {
+            return new Object(this, DATA_TYPE_BYTE, count);
+        } else if (this->name == "[B") {
+            return new Object(this, DATA_TYPE_BYTE, count);
+        } else if (this->name == "[C") {
+            return new Object(this, DATA_TYPE_CHAR, count);
+        } else if (this->name == "[S") {
+            return new Object(this, DATA_TYPE_SHORT, count);
+        } else if (this->name == "[I") {
+            return new Object(this, DATA_TYPE_INT, count);
+        } else if (this->name == "[J") {
+            return new Object(this, DATA_TYPE_LONG, count);
+        } else if (this->name == "[F") {
+            return new Object(this, DATA_TYPE_FLOAT, count);
+        } else if (this->name == "[D") {
+            return new Object(this, DATA_TYPE_DOUBLE, count);
+        } else {
+            return new Object(this, DATA_TYPE_OBJECT, count);
+        }
+    }
+
+    Class::Class(unsigned short accessFlags, const std::string &name, ClassLoader *loader, Class *superClass,
+                 const std::vector<Class *> &interfaceClass) : accessFlags(accessFlags), name(name), loader(loader),
+                                                               superClass(superClass), interfaceClass(interfaceClass) {}
+
+    bool Class::isInitStarted() const {
+        return initStarted;
+    }
+
+    void Class::startInit() {
+        this->initStarted = true;
+    }
+
+    Method *Class::getClinitMethod() {
+        return nullptr;
+    }
+
+    Class::Class() {}
 
 }

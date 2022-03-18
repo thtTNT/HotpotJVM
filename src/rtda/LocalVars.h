@@ -12,6 +12,10 @@ class LocalVars {
 public:
     std::vector<Slot> slots;
 
+    void setSlot(unsigned index, Slot slot);
+
+    Slot getSlot(unsigned index);
+
     void setInt(unsigned index, int value);
 
     int getInt(unsigned index);

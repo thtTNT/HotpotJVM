@@ -5,8 +5,11 @@
 #include "SymRef.h"
 #include "Class.h"
 #include "Field.h"
+#include "Method.h"
 #include "../exception/IllegalAccessError.h"
 #include "../exception/NoSuchFieldError.h"
+#include "../exception/IncompatibleClassChangeError.h"
+#include "../exception/NoSuchMethodError.h"
 
 heap::ClassRef *heap::newClassRef(heap::ConstantPool *constantPool, classFile::ConstantClassInfo classInfo) {
     auto ref = new ClassRef();
@@ -101,4 +104,99 @@ heap::Field *heap::FieldRef::lookupField(Class *destClazz, std::string name, std
     }
     return nullptr;
 
+}
+
+heap::Method *heap::MethodRef::resolvedMethod() {
+    if (this->method == nullptr) {
+        this->resolveMethodRef();
+    }
+    return this->method;
+}
+
+void heap::MethodRef::resolveMethodRef() {
+    auto source = this->constantPool->clazz;
+    auto dest = this->resolvedClass();
+    if (dest->isInterface()) {
+        throw IncompatibleClassChangeError();
+    }
+    auto destMethod = lookupMethod(dest, this->getName(), this->getDescription());
+    if (destMethod == nullptr) {
+        throw NoSuchMethodError();
+    }
+    if (!destMethod->isAccessibleTo(clazz)) {
+        throw IllegalAccessError();
+    }
+    this->method = destMethod;
+}
+
+heap::Method *heap::MethodRef::lookupMethod(heap::Class *destClass, std::string methodName, std::string descriptor) {
+    auto resultMethod = lookupMethodInClass(destClass, methodName, descriptor);
+    if (resultMethod != nullptr) {
+        return resultMethod;
+    }
+    return lookupMethodInInterface(destClass->interfaceClass, methodName, descriptor);
+}
+
+heap::Method *heap::lookupMethodInClass(heap::Class *destClass, std::string name, std::string descriptor) {
+    for (auto targetClass = destClass; targetClass != nullptr; targetClass = targetClass->superClass) {
+        for (auto targetMethod: targetClass->methods) {
+            if (targetMethod->name == name && targetMethod->descriptor == descriptor) {
+                return targetMethod;
+            }
+        }
+    }
+    return nullptr;
+}
+
+heap::Method *
+heap::lookupMethodInInterface(std::vector<Class *> interfaces, std::string name, std::string descriptor) {
+    for (auto interface: interfaces) {
+        for (auto targetMethod: interface->methods) {
+            if (targetMethod->name == name && targetMethod->descriptor == descriptor) {
+                return targetMethod;
+            }
+        }
+        auto targetMethod = lookupMethodInInterface(interface->interfaceClass, name, descriptor);
+        if (targetMethod != nullptr) {
+            return targetMethod;
+        }
+    }
+    return nullptr;
+}
+
+heap::Method *heap::InterfaceMethodRef::resolvedInterfaceMethod() {
+    if (this->method == nullptr) {
+        this->resolveInterfaceMethodRef();
+    }
+    return this->method;
+}
+
+void heap::InterfaceMethodRef::resolveInterfaceMethodRef() {
+    auto source = this->constantPool->clazz;
+    auto dest = this->resolvedClass();
+    if (!dest->isInterface()) {
+        throw IncompatibleClassChangeError();
+    }
+
+    auto resolvedMethod = lookupInterfaceMethod(dest, this->getName(), this->getDescription());
+    if (resolvedMethod == nullptr) {
+        throw NoSuchMethodError();
+    }
+
+    if (!method->isAccessibleTo(source)) {
+        throw IllegalAccessError();
+    }
+
+    this->method = resolvedMethod;
+}
+
+// TODO
+heap::Method *heap::lookupInterfaceMethod(heap::Class *destClass, const std::string &methodName,
+                                          const std::string &methodDescriptor) {
+    for (auto method: destClass->methods) {
+        if (method->name == methodName && method->descriptor == methodDescriptor) {
+            return method;
+        }
+    }
+    return lookupMethodInInterface(destClass->interfaceClass, methodName, methodDescriptor);
 }

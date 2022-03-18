@@ -11,7 +11,12 @@ heap::Class *heap::ClassLoader::loadClass(std::string name) {
     if (classMap[name] != nullptr) {
         return classMap[name];
     }
-    return this->loadNonArrayClass(name);
+
+    if (name[0] == '[') {
+        return this->loadArrayClass(name);
+    } else {
+        return this->loadNonArrayClass(name);
+    }
 }
 
 heap::ClassLoader::ClassLoader(Classpath *classpath) : classpath(classpath) {
@@ -134,6 +139,10 @@ void heap::ClassLoader::initStaticFinalVar(Class *clazz, Field *field) {
             throw ClassNotSupportException();
         }
     }
+}
+
+heap::Class *heap::ClassLoader::loadArrayClass(std::string name) {
+    auto clazz = new Class();
 }
 
 heap::ClassLoader *heap::newClassLoader(Classpath *classpath) {

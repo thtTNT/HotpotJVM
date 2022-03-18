@@ -34,6 +34,8 @@ public:
 
     heap::Object *popRef();
 
+    heap::Object *getRefFromTop(int index);
+
     void pushSlot(Slot slot);
 
     Slot popSlot();

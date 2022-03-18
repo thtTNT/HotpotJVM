@@ -53,12 +53,9 @@
 #include "../references/InstanceOf.h"
 #include "../constant/Ldc.h"
 #include "../references/Invoke.h"
+#include "../control/Return.h"
 
 void NoOperandsInstruction::fetchOperands(ByteCodeReader *reader) {
-
-}
-
-void NoOperandsInstruction::execute(Frame *frame) {
 
 }
 
@@ -374,6 +371,18 @@ Instruction *newInstruction(unsigned char opcode) {
             return new TABLE_SWITCH();
         case INS_CODE_LOOKUP_SWITCH:
             return new LOOKUP_SWITCH();
+        case INS_CODE_IRETURN:
+            return new IRETURN();
+        case INS_CODE_LRETURN:
+            return new LRETURN();
+        case INS_CODE_FRETURN:
+            return new FRETURN();
+        case INS_CODE_DRETURN:
+            return new DRETURN();
+        case INS_CODE_ARETURN:
+            return new ARETURN();
+        case INS_CODE_RETURN:
+            return new RETURN();
         case INS_CODE_GETSTATIC:
             return new GET_STATIC();
         case INS_CODE_PUTSTATIC:
@@ -386,6 +395,10 @@ Instruction *newInstruction(unsigned char opcode) {
             return new INVOKE_VIRTUAL();
         case INS_CODE_INVOKESPECIAL:
             return new INVOKE_SPECIAL();
+        case INS_CODE_INVOKESTATIC:
+            return new INVOKE_STATIC();
+        case INS_CODE_INVOKEINTERFACE:
+            return new INVOKE_INTERFACE();
         case INS_CODE_NEW:
             return new NEW();
         case INS_CODE_CHECKCAST:

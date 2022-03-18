@@ -9,5 +9,5 @@ void interpret(heap::Method *method) {
     auto thread = newThread();
     auto frame = thread->initFrame(method);
     thread->pushFrame(frame);
-    loop(thread, method->code);
+    loop(thread);
 }

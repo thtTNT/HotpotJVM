@@ -228,8 +228,6 @@ class NOPE : public Instruction {
 
 class NoOperandsInstruction : public Instruction {
     void fetchOperands(ByteCodeReader *reader) override;
-
-    void execute(Frame *frame) override;
 };
 
 class BranchInstruction : public Instruction {

@@ -14,7 +14,7 @@ void Stack::push(Frame *frame) {
     if (this->size >= this->maxSize) {
         throw StackOverFlowError();
     }
-    if (this->top == nullptr) {
+    if (this->top != nullptr) {
         frame->last = this->top;
     }
     this->top = frame;
@@ -37,6 +37,10 @@ Frame *Stack::getTop() {
         throw StackEmptyError();
     }
     return this->top;
+}
+
+bool Stack::isEmpty() {
+    return this->top == nullptr;
 }
 
 Stack *newStack(unsigned int maxSize) {

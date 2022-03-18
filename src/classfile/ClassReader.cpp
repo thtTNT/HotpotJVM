@@ -75,7 +75,7 @@ unsigned long ClassReader::readUint64() {
 }
 
 char *ClassReader::readBytes(unsigned int lenToRead) {
-    if (lenToRead - index >= lenToRead) {
+    if (length - index >= lenToRead) {
         auto result = new char[length];
         unsigned int rest = lenToRead;
         while (rest--) {

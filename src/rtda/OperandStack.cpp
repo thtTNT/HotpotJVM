@@ -75,6 +75,13 @@ Slot OperandStack::popSlot() {
     return this->slots[this->size];
 }
 
+heap::Object *OperandStack::getRefFromTop(int index) {
+    if (index >= this->size) {
+        return nullptr;
+    }
+    return this->slots[this->size - index - 1].ref;
+}
+
 
 
 

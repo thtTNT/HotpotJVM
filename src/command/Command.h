@@ -11,19 +11,23 @@
 #include "../exception/CommandParseError.h"
 
 
-struct CommandInfo {
-    bool helpFlag = false;
-    bool versionFlag = false;
+struct JVMStartInfo {
     std::string className;
     std::string classpath;
     std::string Xjre;
     std::vector<std::string> args;
 };
 
-CommandInfo parseCommand(int argc, char *argv[]);
+namespace Args {
+    class CmdLine;
+}
 
-void printCommand(const CommandInfo &info);
+void executeCommand(int argc, char *argv[]);
 
-void executeCommand(const CommandInfo &info);
+JVMStartInfo parseCommand(int argc, char *argv[]);
+
+void printCommand(const JVMStartInfo &info);
+
+void executeCommand(const JVMStartInfo &info);
 
 #endif //HOTPOTJVM_COMMAND_H

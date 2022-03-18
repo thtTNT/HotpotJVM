@@ -8,123 +8,77 @@
 #include "../classpath/Classpath.h"
 #include "../classfile/ClassFile.h"
 #include "../Interpreter.h"
+#include <args-parser/all.hpp>
 
 using namespace classFile;
 
-CommandInfo parseCommand(int argc, char *argv[]) {
-    CommandInfo info;
-    if (argc == 1) {
-        info.helpFlag = true;
-        info.versionFlag = false;
-        return info;
-    }
-    if (strcmp(argv[1], "-help") == 0) {
-        info.helpFlag = true;
-        info.versionFlag = false;
-        return info;
-    }
-    if (strcmp(argv[1], "-version") == 0) {
-        info.helpFlag = false;
-        info.versionFlag = true;
-        return info;
-    }
-    int index = 1;
-    while (index < argc) {
-        // Parse classpath
-        if (strcmp(argv[index], "-cp") == 0 || strcmp(argv[index], "-classpath") == 0) {
-            if (argc == index + 1) {
-                throw CommandParseError("-classpath must follow a string");
-            }
-            info.classpath = argv[++index];
-            if (!tools::string::endWith(info.className, "/")) {
-                info.classpath = info.classpath + "/";
-            }
-            index++;
-            continue;
-        }
-
-        // Parse Xjre
-        if (strcmp(argv[index], "-Xjre") == 0) {
-            if (argc == index + 1) {
-                throw CommandParseError("-Xjre must follow a string");
-            }
-            info.Xjre = argv[++index];
-            if (!tools::string::endWith(info.Xjre, "/")) {
-                info.Xjre += "/";
-            }
-            index++;
-            continue;
-        }
-
-        // Parse class name
-        info.className = argv[index];
-        index++;
-
-        // Parse args
-        while (index < argc) {
-            info.args.emplace_back(argv[index]);
-            index++;
-        }
-    }
-
-    // Fill default classpath
-    if (info.classpath.empty()) {
-        info.classpath = boost::filesystem::initial_path<boost::filesystem::path>().string() + "/";
-    }
-    // Check Xjre
-    if (info.Xjre.empty()) {
-        throw CommandParseError("-Xjre is required");
-    }
-    return info;
-}
-
-void printCommand(const CommandInfo &info) {
-    std::cout << "helpFlag: " << info.helpFlag << std::endl;
-    std::cout << "versionFlag: " << info.versionFlag << std::endl;
-    std::cout << "classpath: " << info.classpath << std::endl;
-    std::cout << "Xjre: " << info.Xjre << std::endl;
-    std::cout << "className: " << info.className << std::endl;
-    // Print args
-    std::cout << "args: ";
-    for (const auto &arg: info.args) {
-        std::cout << arg << " ";
-    }
-    std::cout << std::endl;
-}
-
-MemberInfo *getMainMethod(ClassFile *cf) {
-    for (auto method: cf->Methods()) {
-        if (method->getName() == "main" && method->getDescriptor() == "([Ljava/lang/String;)V") {
-            return method;
-        }
-    }
-    return nullptr;
-}
-
-
-void startJVM(const CommandInfo &info) {
+void startJVM(const JVMStartInfo &info) {
     auto classpath = Classpath::parse(info.Xjre, info.classpath);
     auto classLoader = heap::newClassLoader(&classpath);
-    auto mainClass = classLoader->loadClass("MyObject.class");
+    auto mainClass = classLoader->loadClass(info.className);
     auto mainMethod = mainClass->getMainMethod();
     interpret(mainMethod);
 }
 
-void executeCommand(const CommandInfo &info) {
-    if (info.helpFlag) {
-        std::cout << "Usage: HotpotJVM [-options] class [args...]\n"
-                     "      -help list all command of Hotpot JVM\n"
-                     "      -version show the version of Hotpot JVM\n"
-                     "      -classpath[cp] set the classpath";
-        return;
-    }
-    if (info.versionFlag) {
-        std::cout << "HotpotJVM version 0.0.1";
-        return;
-    }
+void executeCommand(int argc, char **argv) {
+    Args::CmdLine cmd(argc, argv, Args::CmdLine::HandlePositionalArguments);
 
-    startJVM(info);
+    cmd.addArgWithFlagAndName('h', "help", false, false, "Help flag", "Show the help info of HotpotJVM")
+            .addArgWithFlagAndName('v', "version", false, false, "Version flag", "Show the version of HotpotJVM")
+            .addArgWithFlagAndName('c', "classpath", true, false, "classpath", "The user defined path of library")
+            .addArgWithFlagAndName('j', "jre", true, true, "Jre path", "Jre path");
+
+    try {
+        cmd.parse();
+        JVMStartInfo info{};
+
+        // help
+        if (argc == 1 || cmd.isDefined("-h")) {
+            Args::HelpPrinter printer;
+            printer.setExecutable("HotpotJVM");
+            printer.setAppDescription("A Java Virtual Machine developed by thtTNT");
+            printer.setLineLength(100);
+            printer.setCmdLine(&cmd);
+            printer.print(std::cout);
+            return;
+        }
+
+        // version
+        if (cmd.isDefined("-v")) {
+            std::cout << "HotpotJVM Neko version 0.0.1";
+            return;
+        }
+
+        // classpath
+        if (cmd.isDefined("-c")) {
+            info.classpath = cmd.value("-c");
+            if (!tools::string::endWith(info.classpath, "/")) {
+                info.classpath = info.classpath + "/";
+            }
+        } else {
+            info.classpath = boost::filesystem::initial_path<boost::filesystem::path>().string() + "/";
+        }
+
+        //jre Path
+        info.Xjre = cmd.value("-j");
+        if (!tools::string::endWith(info.Xjre, "/")) {
+            info.Xjre = info.Xjre + "/";
+        }
+
+        //handle className
+        if (cmd.positional().size() == 0) {
+            std::cout << "A class or --jar is required";
+            return;
+        } else {
+            info.className = cmd.positional()[0];
+            info.args = cmd.positional();
+        }
+
+        startJVM(info);
+
+    } catch (Args::BaseException &exception) {
+        std::cout << exception.desc() << std::endl;
+    }
 }
-
 
 

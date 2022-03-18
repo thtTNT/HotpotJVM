@@ -59,8 +59,8 @@ std::string ClassFile::SuperClassName() {
 
 std::vector<std::string> ClassFile::InterfaceNames() {
     auto interfaceNames = std::vector<std::string>(this->interfaces.size());
-    for (int i = 0; i < 0; i++) {
-        interfaceNames[i] = this->constantPool->getUTF8(this->interfaces[i]);
+    for (int i = 0; i < this->interfaces.size(); i++) {
+        interfaceNames[i] = this->constantPool->getClassName(this->interfaces[i]);
     }
     return interfaceNames;
 }

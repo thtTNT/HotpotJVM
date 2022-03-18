@@ -3,6 +3,7 @@
 //
 
 #include "Frame.h"
+#include "Thread.h"
 
 Frame::Frame(Thread *thread, heap::Method *method) {
     this->thread = thread;
@@ -13,4 +14,8 @@ Frame::Frame(Thread *thread, heap::Method *method) {
 
 heap::Method *Frame::getMethod() const {
     return method;
+}
+
+void Frame::revertNextPC() {
+    this->nextPC = this->thread->getPC();
 }
