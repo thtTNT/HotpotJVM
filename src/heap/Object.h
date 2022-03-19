@@ -27,6 +27,7 @@ namespace heap {
     private:
         Class *clazz;
 
+        int type;
         union {
             Slots *fields;
             std::vector<char> *bytes;
@@ -52,6 +53,24 @@ namespace heap {
         Slots *getFields() const;
 
         bool isInstanceOf(Class *clazz);
+
+        int arrayLength();
+
+        std::vector<char> *getBytes() const;
+
+        std::vector<short> *getShorts() const;
+
+        std::vector<int> *getInts() const;
+
+        std::vector<long> *getLongs() const;
+
+        std::vector<unsigned short> *getChars() const;
+
+        std::vector<float> *getFloats() const;
+
+        std::vector<double> *getDoubles() const;
+
+        std::vector<Object *> *getRefs() const;
 
     };
 }

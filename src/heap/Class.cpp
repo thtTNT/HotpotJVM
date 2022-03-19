@@ -21,6 +21,34 @@ namespace heap {
         return clazz;
     }
 
+    std::string descriptorTypeToClassName(std::string descriptorType) {
+        if (descriptorType[0] == '[') {
+            return descriptorType;
+        } else if (descriptorType[0] == 'L') {
+            return descriptorType.substr(1, descriptorType.length() - 2);
+        } else if (descriptorType == "V") {
+            return "void";
+        } else if (descriptorType == "Z") {
+            return "boolean";
+        } else if (descriptorType == "B") {
+            return "byte";
+        } else if (descriptorType == "S") {
+            return "short";
+        } else if (descriptorType == "I") {
+            return "int";
+        } else if (descriptorType == "L") {
+            return "long";
+        } else if (descriptorType == "C") {
+            return "char";
+        } else if (descriptorType == "F") {
+            return "float";
+        } else if (descriptorType == "D") {
+            return "double";
+        } else {
+            throw RuntimeException("Invalid descriptor: " + descriptorType);
+        }
+    }
+
     bool Class::isPublic() {
         return this->accessFlags & ACC_PUBLIC;
     }
@@ -79,14 +107,36 @@ namespace heap {
         return new Object(this);
     }
 
-    bool Class::isAssignableForm(Class *pClass) {
-        if (this == pClass) {
+    bool Class::isAssignableForm(Class *otherClass) {
+        if (otherClass == this) {
             return true;
         }
-        if (!this->isInterface()) {
-            return pClass->isSubClassOf(this);
+        if (!otherClass->isArray()) {
+            if (!otherClass->isInterface()) {
+                if (!this->isInterface()) {
+                    return otherClass->isSubClassOf(this);
+                } else {
+                    return otherClass->isImplements(this);
+                }
+            } else {
+                if (!this->isInterface()) {
+                    return this->isJlObject();
+                } else {
+                    return this->isSuperInterfaceOf(otherClass);
+                }
+            }
         } else {
-            return pClass->isImplements(this);
+            if (!this->isArray()) {
+                if (!this->isInterface()) {
+                    return this->isJlObject();
+                } else {
+                    return this->isJLCloneable() || this->JIoSerializable();
+                }
+            } else {
+                auto otherClassComponent = otherClass->getComponentClass();
+                auto thisClassComponent = this->getComponentClass();
+                return otherClassComponent == thisClassComponent || otherClass->isAssignableForm(this);
+            }
         }
     }
 
@@ -162,8 +212,12 @@ namespace heap {
     }
 
     Class::Class(unsigned short accessFlags, const std::string &name, ClassLoader *loader, Class *superClass,
-                 const std::vector<Class *> &interfaceClass) : accessFlags(accessFlags), name(name), loader(loader),
-                                                               superClass(superClass), interfaceClass(interfaceClass) {}
+                 const std::vector<Class *> &interfaceClass, bool initStarted) : accessFlags(accessFlags), name(name),
+                                                                                 loader(loader),
+                                                                                 superClass(superClass),
+                                                                                 interfaceClass(interfaceClass),
+                                                                                 initStarted(initStarted) {
+    }
 
     bool Class::isInitStarted() const {
         return initStarted;
@@ -178,5 +232,64 @@ namespace heap {
     }
 
     Class::Class() {}
+
+
+    std::string getArrayClassName(std::string className) {
+        if (className[0] == '[') {
+            return "[" + className;
+        }
+        if (className == "void") {
+            return "[V";
+        } else if (className == "boolean") {
+            return "[Z";
+        } else if (className == "byte") {
+            return "[B";
+        } else if (className == "short") {
+            return "[S";
+        } else if (className == "int") {
+            return "[I";
+        } else if (className == "long") {
+            return "[L";
+        } else if (className == "char") {
+            return "[C";
+        } else if (className == "float") {
+            return "[F";
+        } else if (className == "double") {
+            return "[D";
+        } else {
+            return "[L" + className + ";";
+        }
+    }
+
+    Class *Class::getArrayClass() {
+        auto arrayClassName = getArrayClassName(this->name);
+        return this->loader->loadClass(arrayClassName);
+    }
+
+    Class *Class::getComponentClass() {
+        if (this->name[0] == '[') {
+            auto componentTypeDescriptor = this->name.substr(1, this->name.length() - 1);
+            auto className = descriptorTypeToClassName(componentTypeDescriptor);
+            return this->loader->loadClass(className);
+        } else {
+            throw RuntimeException("Not array: " + this->name);
+        }
+    }
+
+    bool Class::isJlObject() {
+        return this->name == "java/lang/Object";
+    }
+
+    bool Class::isJLCloneable() {
+        return this->name == "java/lang/Cloneable";
+    }
+
+    bool Class::JIoSerializable() {
+        return this->name == "java/io/Serializable";
+    }
+
+    bool Class::isSuperInterfaceOf(Class *otherClass) {
+        return otherClass->isSubInterfaceOf(this);
+    }
 
 }

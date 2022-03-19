@@ -60,7 +60,7 @@ namespace heap {
         Class();
 
         Class(unsigned short accessFlags, const std::string &name, ClassLoader *loader, Class *superClass,
-              const std::vector<Class *> &interfaceClass);
+              const std::vector<Class *> &interfaceClass, bool initStarted);
 
         bool isPublic();
 
@@ -107,9 +107,23 @@ namespace heap {
         void startInit();
 
         Method *getClinitMethod();
+
+        Class *getArrayClass();
+
+        Class *getComponentClass();
+
+        bool isJlObject();
+
+        bool isJLCloneable();
+
+        bool JIoSerializable();
+
+        bool isSuperInterfaceOf(Class *pClass);
     };
 
     Class *newClass(ClassFile *classFile);
+
+    std::string descriptorTypeToClassName(std::string descriptorType);
 }
 
 

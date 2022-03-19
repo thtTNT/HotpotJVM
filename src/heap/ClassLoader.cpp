@@ -142,7 +142,12 @@ void heap::ClassLoader::initStaticFinalVar(Class *clazz, Field *field) {
 }
 
 heap::Class *heap::ClassLoader::loadArrayClass(std::string name) {
-    auto clazz = new Class();
+    auto interfaceClass = std::vector<Class *>(2);
+    interfaceClass.push_back(this->loadClass("java/lang/Cloneable"));
+    interfaceClass.push_back(this->loadClass("java/io/Serializable"));
+    auto clazz = new Class(ACC_PUBLIC, name, this, this->loadClass("java/lang/Object"), interfaceClass, true);
+    this->classMap[name] = clazz;
+    return clazz;
 }
 
 heap::ClassLoader *heap::newClassLoader(Classpath *classpath) {

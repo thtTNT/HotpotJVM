@@ -54,6 +54,9 @@
 #include "../constant/Ldc.h"
 #include "../references/Invoke.h"
 #include "../control/Return.h"
+#include "../load/ArrayLoad.h"
+#include "../store/ArrayStore.h"
+#include "../references/Array.h"
 
 void NoOperandsInstruction::fetchOperands(ByteCodeReader *reader) {
 
@@ -163,6 +166,22 @@ Instruction *newInstruction(unsigned char opcode) {
             return new ALOAD_2();
         case INS_CODE_ALOAD_3:
             return new ALOAD_3();
+        case INS_CODE_IALOAD:
+            return new IALOAD();
+        case INS_CODE_LALOAD:
+            return new LALOAD();
+        case INS_CODE_FALOAD:
+            return new FALOAD();
+        case INS_CODE_DALOAD:
+            return new DALOAD();
+        case INS_CODE_AALOAD:
+            return new AALOAD();
+        case INS_CODE_BALOAD:
+            return new BALOAD();
+        case INS_CODE_CALOAD:
+            return new CALOAD();
+        case INS_CODE_SALOAD:
+            return new SALOAD();
         case INS_CODE_ISTORE:
             return new ISTORE();
         case INS_CODE_LSTORE:
@@ -213,6 +232,22 @@ Instruction *newInstruction(unsigned char opcode) {
             return new ASTORE_2();
         case INS_CODE_ASTORE_3:
             return new ASTORE_3();
+        case INS_CODE_IASTORE:
+            return new IASTORE();
+        case INS_CODE_LASTORE:
+            return new LASTORE();
+        case INS_CODE_FASTORE:
+            return new FASTORE();
+        case INS_CODE_DASTORE:
+            return new DASTORE();
+        case INS_CODE_AASTORE:
+            return new AASTORE();
+        case INS_CODE_BASTORE:
+            return new BASTORE();
+        case INS_CODE_CASTORE:
+            return new CASTORE();
+        case INS_CODE_SASTORE:
+            return new SASTORE();
         case INS_CODE_POP:
             return new POP();
         case INS_CODE_POP2:
@@ -401,6 +436,12 @@ Instruction *newInstruction(unsigned char opcode) {
             return new INVOKE_INTERFACE();
         case INS_CODE_NEW:
             return new NEW();
+        case INS_CODE_NEWARRAY:
+            return new NEW_ARRAY();
+        case INS_CODE_ANEWARRAY:
+            return new ANEW_ARRAY();
+        case INS_CODE_ARRAYLENGTH:
+            return new ARRAY_LENGTH();
         case INS_CODE_CHECKCAST:
             return new CHECK_CAST();
         case INS_CODE_INSTANCEOF:
