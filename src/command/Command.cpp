@@ -3,21 +3,23 @@
 //
 #include "Command.h"
 #include "../utils/Utils.h"
+#include "../heap/ClassLoader.h"
+#include "../exception/CommandParseError.h"
 #include "boost/filesystem/path.hpp"
 #include "boost/filesystem/operations.hpp"
-#include "../classpath/Classpath.h"
-#include "../classfile/ClassFile.h"
-#include "../Interpreter.h"
 #include <args-parser/all.hpp>
 
-using namespace classFile;
 
 void startJVM(const JVMStartInfo &info) {
     auto classpath = Classpath::parse(info.Xjre, info.classpath);
     auto classLoader = heap::newClassLoader(&classpath);
     auto mainClass = classLoader->loadClass(info.className);
     auto mainMethod = mainClass->getMainMethod();
-    interpret(mainMethod);
+    if (mainMethod != nullptr) {
+        interpret(mainMethod, info.args);
+    } else {
+        std::cout << "Main method not found in class" << std::endl;
+    }
 }
 
 void executeCommand(int argc, char **argv) {

@@ -9,6 +9,7 @@
 #include "../classpath/Classpath.h"
 #include <map>
 #include <string>
+#include "ClassLoader.h"
 
 namespace heap {
     class Field;

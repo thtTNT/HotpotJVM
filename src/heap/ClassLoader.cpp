@@ -6,6 +6,7 @@
 #include "Class.h"
 #include "Field.h"
 #include "../exception/ClassNotSupportException.h"
+#include "StringPool.h"
 
 heap::Class *heap::ClassLoader::loadClass(std::string name) {
     if (classMap[name] != nullptr) {
@@ -135,8 +136,9 @@ void heap::ClassLoader::initStaticFinalVar(Class *clazz, Field *field) {
             auto value = constantPool->getConstant(constantValueIndex).doubleValue;
             vars->setDouble(constantValueIndex, value);
         } else if (field->descriptor == "Ljava/lang/String") {
-            // TODO
-            throw ClassNotSupportException();
+            auto str = constantPool->getConstant(constantValueIndex).stringValue;
+            auto jStr = heap::JString(clazz->loader, str);
+            vars->setRef(slotId, jStr);
         }
     }
 }

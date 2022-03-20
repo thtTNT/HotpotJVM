@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include "../exception/CommandParseError.h"
+#include "../Interpreter.h"
 
 
 struct JVMStartInfo {

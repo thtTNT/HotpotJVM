@@ -72,6 +72,9 @@ namespace heap {
 
         std::vector<Object *> *getRefs() const;
 
+        void setRefVar(std::string name, std::string descriptor, Object *ref);
+
+        heap::Object *getRefVar(std::string name, std::string descriptor);
     };
 }
 

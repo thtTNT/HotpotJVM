@@ -6,6 +6,7 @@
 #include "Class.h"
 #include "Field.h"
 #include "Method.h"
+#include "ClassLoader.h"
 #include "../exception/IllegalAccessError.h"
 #include "../exception/NoSuchFieldError.h"
 #include "../exception/IncompatibleClassChangeError.h"

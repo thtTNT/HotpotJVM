@@ -3,9 +3,11 @@
 //
 
 #include "Ldc.h"
+#include "../../heap/StringPool.h"
 
 void ldc(Frame *frame, unsigned index) {
     auto stack = frame->operandStack;
+    auto clazz = frame->getMethod()->getClass();
     auto constantPool = frame->getMethod()->getClass()->constantPool;
     auto constant = constantPool->getConstant(index);
     switch (constant.type) {
@@ -15,9 +17,11 @@ void ldc(Frame *frame, unsigned index) {
         case heap::FLOAT:
             stack->pushFloat(constant.floatValue);
             break;
-        case heap::STRING:
-            // TODO
+        case heap::STRING: {
+            auto internedStr = heap::JString(clazz->loader, constant.stringValue);
+            stack->pushRef(internedStr);
             break;
+        }
         case heap::CLASS:
             // TODO
             break;

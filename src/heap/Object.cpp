@@ -4,6 +4,7 @@
 
 #include "Object.h"
 #include "Class.h"
+#include "Field.h"
 #include "../exception/RuntimeException.h"
 
 
@@ -108,3 +109,15 @@ std::vector<double> *heap::Object::getDoubles() const {
 std::vector<heap::Object *> *heap::Object::getRefs() const {
     return refs;
 }
+
+void heap::Object::setRefVar(std::string name, std::string descriptor, Object *ref) {
+    auto field = this->clazz->getField(name, descriptor, false);
+    auto slots = this->fields;
+    slots->setRef(field->slotId, ref);
+}
+
+heap::Object *heap::Object::getRefVar(std::string name, std::string descriptor) {
+    auto field = this->clazz->getField(name, descriptor, false);
+    return this->getFields()->getRef(field->slotId);
+}
+

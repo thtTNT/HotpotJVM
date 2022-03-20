@@ -3,6 +3,7 @@
 //
 
 #include "Array.h"
+#include "../../heap/ClassLoader.h"
 #include "../../exception/RuntimeException.h"
 #include "../../exception/NullPointerException.h"
 

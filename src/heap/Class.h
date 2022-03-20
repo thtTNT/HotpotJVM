@@ -10,7 +10,6 @@
 #include "../classfile/ConstantPool.h"
 #include "../classfile/ClassFile.h"
 #include "ConstantPool.h"
-#include "ClassLoader.h"
 #include "Slots.h"
 
 const unsigned short ACC_PUBLIC = 0x0001;
@@ -39,6 +38,8 @@ namespace heap {
     class Field;
 
     class Method;
+
+    class ClassLoader;
 
     class Class {
     public:
@@ -119,6 +120,8 @@ namespace heap {
         bool JIoSerializable();
 
         bool isSuperInterfaceOf(Class *pClass);
+
+        Field *getField(std::string fieldName, std::string descriptor, bool isStatic);
     };
 
     Class *newClass(ClassFile *classFile);

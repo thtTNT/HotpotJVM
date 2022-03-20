@@ -3,6 +3,7 @@
 //
 
 #include "Invoke.h"
+#include <string>
 #include <iostream>
 #include "../../exception/IncompatibleClassChangeError.h"
 #include "../base/MethodLogic.h"
@@ -96,11 +97,16 @@ void INVOKE_VIRTUAL::execute(Frame *frame) {
                 std::cout << stack->popFloat() << std::endl;
             } else if (descriptor == "(D)V") {
                 std::cout << stack->popDouble() << std::endl;
+            } else if (descriptor == "(Ljava/lang/String;)V") {
+                auto stringRef = stack->popRef();
+                auto chrArray = stringRef->getRefVar("value", "[C");
+                std::cout << std::string(chrArray->getShorts()->begin(), chrArray->getShorts()->end()) << std::endl;
             } else {
                 std::cout << "Error Print: " << methodRef->getDescription() << std::endl;
+                stack->popRef();
             }
-            stack->popRef();
             return;
+
         } else {
             throw NullPointerException();
         }
@@ -108,13 +114,15 @@ void INVOKE_VIRTUAL::execute(Frame *frame) {
 
     if (method->isProtected() &&
         method->clazz->isSuperClassOf(currentClass) &&
-        method->clazz->getPackageName() != currentClass->getPackageName() &&
+        method->clazz->getPackageName() != currentClass->
+                getPackageName() &&
         ref->getClass() != currentClass &&
         !ref->getClass()->isSuperClassOf(currentClass)) {
         throw IllegalAccessError();
     }
 
-    auto methodToInvoke = heap::lookupMethodInClass(ref->getClass(), methodRef->getName(), methodRef->getDescription());
+    auto methodToInvoke = heap::lookupMethodInClass(ref->getClass(), methodRef->getName(),
+                                                    methodRef->getDescription());
     if (methodToInvoke == nullptr || methodToInvoke->isAbstract()) {
         throw AbstractMethodError();
     }
@@ -142,7 +150,8 @@ void INVOKE_INTERFACE::execute(Frame *frame) {
         throw IncompatibleClassChangeError();
     }
 
-    auto methodToInvoke = heap::lookupMethodInClass(ref->getClass(), methodRef->getName(), methodRef->getDescription());
+    auto methodToInvoke = heap::lookupMethodInClass(ref->getClass(), methodRef->getName(),
+                                                    methodRef->getDescription());
     if (methodToInvoke == nullptr || methodToInvoke->isAbstract()) {
         throw AbstractMethodError();
     }

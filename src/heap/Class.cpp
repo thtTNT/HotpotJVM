@@ -6,6 +6,7 @@
 #include "Method.h"
 #include "Field.h"
 #include "../exception/RuntimeException.h"
+#include "ClassLoader.h"
 
 namespace heap {
 
@@ -290,6 +291,17 @@ namespace heap {
 
     bool Class::isSuperInterfaceOf(Class *otherClass) {
         return otherClass->isSubInterfaceOf(this);
+    }
+
+    Field * Class::getField(std::string fieldName, std::string descriptor, bool isStatic) {
+        for (auto clazz = this; clazz != nullptr; clazz = clazz->superClass) {
+            for (auto field: clazz->fields) {
+                if (field->isStatic() == isStatic && field->name == fieldName && field->descriptor == descriptor) {
+                    return field;
+                }
+            }
+        }
+        return nullptr;
     }
 
 }
